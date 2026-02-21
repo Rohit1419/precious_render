@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, X, Play } from "lucide-react";
 import { CompareSlider } from "@/components/ui/compare-slider";
+import type { Portfolio as PortfolioType } from "@/lib/sanity/types";
 
 interface Project {
   id: number;
@@ -19,13 +20,20 @@ interface Project {
   videoUrl?: string;
   type: "image" | "video";
   background?: "bright" | "dark";
+  client?: string;
+  date?: string;
 }
 
-export default function Portfolio() {
+interface PortfolioProps {
+  data: PortfolioType | null;
+}
+
+export default function Portfolio({ data }: PortfolioProps) {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeCategory, setActiveCategory] = useState("still");
 
-  const categories = [
+  // Fallback categories
+  const fallbackCategories = [
     {
       id: "still",
       label: "Still Images",
@@ -48,8 +56,20 @@ export default function Portfolio() {
     },
   ];
 
-  // Helper to generate projects
-  const generateProjects = () => {
+  // Use Sanity data or fallback
+  const categories = useMemo(() => {
+    if (data?.categories && data.categories.length > 0) {
+      return data.categories.map((cat) => ({
+        id: cat.toLowerCase().replace(/\s+/g, ''),
+        label: cat,
+        description: fallbackCategories.find(f => f.id === cat.toLowerCase().replace(/\s+/g, ''))?.description || "",
+      }));
+    }
+    return fallbackCategories;
+  }, [data?.categories]);
+
+  // Helper to generate fallback projects with actual image paths
+  const generateFallbackProjects = () => {
     const stillImages = [
       { src: "/Still Images/Bright Background/01-Robert-Procop-Ring-White-2-Big.jpg", title: "Robert Procop Ring" },
       { src: "/Still Images/Bright Background/0585-Pics_00000.jpg", title: "Diamond Solitaire" },
@@ -65,16 +85,6 @@ export default function Portfolio() {
       { src: "/Still Images/Dark Background/Graff-Necklace.jpg", title: "Graff Necklace" },
       { src: "/Still Images/Dark Background/Jewelett-Black-Big-.jpg", title: "Jewelett Black Edition" },
       { src: "/Still Images/Dark Background/Winter-Leaves-Necklace.jpg", title: "Winter Leaves Necklace" },
-      { src: "/Still Images/Bright Background/01-Robert-Procop-Ring-White-4-Big.jpg", title: "Robert Procop Ring II" },
-      { src: "/Still Images/Bright Background/0585-Pics_00005.jpg", title: "Diamond Solitaire II" },
-      { src: "/Still Images/Bright Background/06-R060416__00006.jpg", title: "Elegant Diamond Ring" },
-      { src: "/Still Images/Bright Background/36-Pics-PL_00006-Large.jpg", title: "Platinum Band II" },
-      { src: "/Still Images/Bright Background/573-liori_00004.jpg", title: "Liori Diamond Ring II" },
-      { src: "/Still Images/Bright Background/Autumn-Earrings-02-big.jpg", title: "Autumn Earrings II" },
-      { src: "/Still Images/Bright Background/BIDG0555R19_web.jpg", title: "Gold Ring Design" },
-      { src: "/Still Images/Bright Background/Nehadani-Color_00001-big.jpg", title: "Nehadani Color II" },
-      { src: "/Still Images/Bright Background/bracelet_00013-big.jpg", title: "Diamond Tennis Bracelet II" },
-      { src: "/Still Images/Dark Background/01-Ring-De-Grisogono-2-big.jpg", title: "De Grisogono Ring II" },
     ];
 
     const onBodyData = [
@@ -85,34 +95,16 @@ export default function Portfolio() {
         type: "video" as const,
         videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
       },
-      { src: "/Still Images/Bright Background/bracelet_00013-big.jpg", title: "Diamond Tennis Bracelet II", type: "image" as const },
-      {
-        src: "/Still Images/Dark Background/Cartier-PARIS-NOUVELLE-VAGUE-BRACELET.jpg",
-        title: "Paris Nouvelle Vague On-Body",
-        type: "video" as const,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
-      },
-      { src: "/Still Images/Bright Background/bracelet_00014-big.jpg", title: "Diamond Tennis Bracelet III", type: "image" as const },
-      {
-        src: "/Still Images/Bright Background/01-Robert-Procop-Ring-White-2-Big.jpg",
-        title: "Ring On Hand Animation",
-        type: "video" as const,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
-      },
     ];
 
     const classicThumbnails = [
       "/Still Images/Dark Background/01-Ring-De-Grisogono-1-big.jpg",
       "/Still Images/Dark Background/01-Ring-De-Grisogono-2-big.jpg",
-      "/Still Images/Dark Background/01-Ring-De-Grisogono-3-big.jpg",
-      "/Still Images/Bright Background/01-Robert-Procop-Ring-White-2-Big.jpg",
     ];
 
     const creativeThumbnails = [
       "/Still Images/Bright Background/Nehadani-Color_00000-big.jpg",
       "/Still Images/Bright Background/Nehadani-Color_00001-big.jpg",
-      "/Still Images/Bright Background/Nehadani-Color_00002-big.jpg",
-      "/Still Images/Bright Background/Nehadani-Color_00003-big.jpg",
     ];
 
     const allProjects: Project[] = [];
@@ -137,7 +129,7 @@ export default function Portfolio() {
       });
     });
 
-    // On-Body Visuals - Mix of images and videos
+    // On-Body Visuals
     onBodyData.forEach((item) => {
       allProjects.push({
         id: idCounter++,
@@ -168,7 +160,7 @@ export default function Portfolio() {
         url: "#",
         technologies: ["Animation", "360 Video", "Gold Material"],
         type: "video",
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Placeholder
+        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
         background: getBackground(src),
       });
     });
@@ -184,7 +176,7 @@ export default function Portfolio() {
         url: "#",
         technologies: ["Motion Graphics", "Cinematic", "VFX"],
         type: "video",
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Placeholder
+        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
         background: getBackground(src),
       });
     });
@@ -192,7 +184,26 @@ export default function Portfolio() {
     return allProjects;
   };
 
-  const projects = useMemo(() => generateProjects(), []);
+  // Convert Sanity projects to local format
+  const projects = useMemo(() => {
+    if (data?.projects && data.projects.length > 0) {
+      return data.projects.map((project, index) => ({
+        id: index + 1,
+        title: project.title,
+        category: project.category.toLowerCase().replace(/\s+/g, ''),
+        description: project.description,
+        image: project.imageUrl,
+        url: "#",
+        technologies: [],
+        type: (project.videoUrl ? "video" : "image") as "image" | "video",
+        videoUrl: project.videoUrl,
+        background: (project.imageUrl.toLowerCase().includes("dark") ? "dark" : "bright") as "bright" | "dark",
+        client: project.client,
+        date: project.date,
+      }));
+    }
+    return generateFallbackProjects();
+  }, [data?.projects]);
 
   const filteredProjects = useMemo(() => {
     return projects.filter((p) => p.category === activeCategory);
@@ -252,8 +263,13 @@ export default function Portfolio() {
             Our Portfolio
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-neutral-900 dark:text-white">
-            Featured Projects
+            {data?.sectionTitle || "Featured Projects"}
           </h2>
+          {data?.sectionDescription && (
+            <p className="max-w-2xl mx-auto text-neutral-600 dark:text-neutral-400">
+              {data.sectionDescription}
+            </p>
+          )}
         </motion.div>
 
         {/* Tabs */}
@@ -297,20 +313,24 @@ export default function Portfolio() {
             {(activeCategory === "still" || activeCategory === "classic") ? (
               <div className="space-y-12">
                 {/* Bright Background */}
-                <div>
-                  <h3 className="text-xl md:text-2xl font-semibold text-center mb-6 text-neutral-800 dark:text-neutral-200">
-                    Bright Background
-                  </h3>
-                  {renderGrid(filteredProjects.filter(p => p.background === "bright"))}
-                </div>
+                {filteredProjects.filter(p => p.background === "bright").length > 0 && (
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-semibold text-center mb-6 text-neutral-800 dark:text-neutral-200">
+                      Bright Background
+                    </h3>
+                    {renderGrid(filteredProjects.filter(p => p.background === "bright"))}
+                  </div>
+                )}
 
                 {/* Dark Background */}
-                <div>
-                  <h3 className="text-xl md:text-2xl font-semibold text-center mb-6 text-neutral-800 dark:text-neutral-200">
-                    Dark Background
-                  </h3>
-                  {renderGrid(filteredProjects.filter(p => p.background === "dark"))}
-                </div>
+                {filteredProjects.filter(p => p.background === "dark").length > 0 && (
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-semibold text-center mb-6 text-neutral-800 dark:text-neutral-200">
+                      Dark Background
+                    </h3>
+                    {renderGrid(filteredProjects.filter(p => p.background === "dark"))}
+                  </div>
+                )}
               </div>
             ) : (
               renderGrid(filteredProjects)
@@ -398,6 +418,21 @@ export default function Portfolio() {
                   />
                 </div>
               )}
+
+              {/* Project Info Overlay */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 to-transparent rounded-b-lg">
+                <h3 className="text-white text-xl md:text-2xl font-bold mb-2">
+                  {selectedProject.title}
+                </h3>
+                <p className="text-white/80 text-sm md:text-base">
+                  {selectedProject.description}
+                </p>
+                {selectedProject.client && (
+                  <p className="text-white/60 text-xs md:text-sm mt-2">
+                    Client: {selectedProject.client}
+                  </p>
+                )}
+              </div>
             </motion.div>
           </motion.div>
         )}
@@ -411,7 +446,7 @@ function ProjectCard({ project, onClick }: { project: Project; onClick: () => vo
     <motion.div
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      className="group cursor-pointer relative aspect-square overflow-hidden bg-neutral-100 dark:bg-neutral-800"
+      className="group cursor-pointer relative aspect-square overflow-hidden bg-neutral-100 dark:bg-neutral-800 rounded-lg"
       onClick={onClick}
     >
       <Image
@@ -430,6 +465,11 @@ function ProjectCard({ project, onClick }: { project: Project; onClick: () => vo
           </div>
         </div>
       )}
+
+      {/* Hover Overlay with Title */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+        <h4 className="text-white text-sm font-semibold">{project.title}</h4>
+      </div>
     </motion.div>
   );
 }
