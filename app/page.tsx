@@ -24,9 +24,7 @@ export default function Home() {
       <Process />
       <Testimonials />
       <Pricing />
-      <Blog />
       <FAQ />
-      <ContactForm />
       <Footer />
     </main>
   );
