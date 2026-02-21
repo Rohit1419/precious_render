@@ -104,3 +104,53 @@ export const siteSettingsQuery = groq`
     socialLinks
   }
 `;
+
+export const portfolioQuery = groq`
+  *[_type == "portfolio"][0] {
+    sectionTitle,
+    sectionDescription,
+    categories,
+    projects[] {
+      title,
+      description,
+      category,
+      "imageUrl": image.asset->url,
+      "imageAlt": image.alt,
+      videoUrl,
+      featured,
+      client,
+      date
+    }
+  }
+`;
+
+
+export const contactQuery = groq`
+  *[_type == "contact"][0] {
+    sectionTitle,
+    sectionDescription,
+    formTitle,
+    formDescription,
+    successMessage,
+    errorMessage
+  }
+`;
+
+export const problemSolutionQuery = groq`
+  *[_type == "problemSolution"][0] {
+    problemTitle,
+    problemDescription,
+    problems[] {
+      title,
+      description,
+      icon
+    },
+    solutionTitle,
+    solutionDescription,
+    solutions[] {
+      title,
+      description,
+      icon
+    }
+  }
+`;

@@ -7,7 +7,10 @@ import {
   faqQuery, 
   testimonialsQuery, 
   processQuery, 
-  siteSettingsQuery 
+  siteSettingsQuery,
+  portfolioQuery,
+  contactQuery,
+  problemSolutionQuery
 } from './queries';
 
 const REVALIDATE_TIME = 60; // 60 seconds
@@ -108,6 +111,43 @@ export async function getSiteSettings() {
   }
 }
 
+export async function getPortfolioData() {
+  try {
+    const data = await client.fetch(portfolioQuery, {}, {
+      next: { revalidate: REVALIDATE_TIME }
+    });
+    return data;
+  } catch (error) {
+    console.error('Error fetching portfolio data:', error);
+    return null;
+  }
+}
+
+
+export async function getContactData() {
+  try {
+    const data = await client.fetch(contactQuery, {}, {
+      next: { revalidate: REVALIDATE_TIME }
+    });
+    return data;
+  } catch (error) {
+    console.error('Error fetching contact data:', error);
+    return null;
+  }
+}
+
+export async function getProblemSolutionData() {
+  try {
+    const data = await client.fetch(problemSolutionQuery, {}, {
+      next: { revalidate: REVALIDATE_TIME }
+    });
+    return data;
+  } catch (error) {
+    console.error('Error fetching problem-solution data:', error);
+    return null;
+  }
+}
+
 // Fetch all data at once for the landing page
 export async function getAllLandingPageData() {
   try {
@@ -119,7 +159,10 @@ export async function getAllLandingPageData() {
       faq,
       testimonials,
       process,
-      siteSettings
+      siteSettings,
+      portfolio,
+      contact,
+      problemSolution
     ] = await Promise.all([
       getHeroData(),
       getFeaturesData(),
@@ -128,7 +171,10 @@ export async function getAllLandingPageData() {
       getFaqData(),
       getTestimonialsData(),
       getProcessData(),
-      getSiteSettings()
+      getSiteSettings(),
+      getPortfolioData(),
+      getContactData(),
+      getProblemSolutionData()
     ]);
 
     return {
@@ -139,7 +185,10 @@ export async function getAllLandingPageData() {
       faq,
       testimonials,
       process,
-      siteSettings
+      siteSettings,
+      portfolio,
+      contact,
+      problemSolution
     };
   } catch (error) {
     console.error('Error fetching landing page data:', error);
