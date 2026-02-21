@@ -3,8 +3,14 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
+import type { Contact as ContactType, SiteSettings } from "@/lib/sanity/types";
 
-export default function Contact() {
+interface ContactProps {
+  data: ContactType | null;
+  siteSettings?: SiteSettings | null;
+}
+
+export default function Contact({ data, siteSettings }: ContactProps) {
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -16,6 +22,21 @@ export default function Contact() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // Fallback data
+  const fallbackData = {
+    sectionTitle: "Start Your Project Today",
+    sectionDescription: "Ready to transform your web presence? Fill out the form below and we'll get back to you within 24 hours.",
+    formTitle: "Send Us a Message",
+    formDescription: "",
+    successMessage: "Thank you for your message! We'll get back to you as soon as possible.",
+    errorMessage: "Something went wrong. Please try again.",
+  };
+
+  const content = data || fallbackData;
+  const contactEmail = siteSettings?.contactEmail || "contact@preciousrender.com";
+  const contactPhone = siteSettings?.contactPhone || "+91 XXXXX-XXXXX";
+  const address = siteSettings?.address || "Mumbai, Maharashtra, India";
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -68,11 +89,10 @@ export default function Contact() {
             Get In Touch
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-neutral-900 dark:text-white">
-            Start Your Project Today
+            {content.sectionTitle}
           </h2>
           <p className="max-w-2xl mx-auto text-neutral-600 dark:text-neutral-400">
-            Ready to transform your web presence? Fill out the form below and
-            we&apos;ll get back to you within 24 hours.
+            {content.sectionDescription}
           </p>
         </motion.div>
 
@@ -104,10 +124,10 @@ export default function Contact() {
                       Email Us
                     </p>
                     <a
-                      href="mailto:contact@preciousrender.com"
+                      href={`mailto:${contactEmail}`}
                       className="text-neutral-600 dark:text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors"
                     >
-                      contact@preciousrender.com
+                      {contactEmail}
                     </a>
                   </div>
                 </div>
@@ -121,10 +141,10 @@ export default function Contact() {
                       WhatsApp/Call Us
                     </p>
                     <a
-                      href="tel:+91XXXXXXXXXX"
+                      href={`tel:${contactPhone.replace(/\s/g, '')}`}
                       className="text-neutral-600 dark:text-neutral-400 hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors"
                     >
-                      +91 XXXXX-XXXXX
+                      {contactPhone}
                     </a>
                   </div>
                 </div>
@@ -138,7 +158,7 @@ export default function Contact() {
                       Studio Location
                     </p>
                     <p className="text-neutral-600 dark:text-neutral-400">
-                      Mumbai, Maharashtra, India
+                      {address}
                     </p>
                   </div>
                 </div>
@@ -178,7 +198,7 @@ export default function Contact() {
           >
             <div className="bg-white dark:bg-neutral-900 rounded-xl p-8 border border-neutral-200 dark:border-neutral-800">
               <h3 className="text-2xl font-bold mb-6 text-neutral-900 dark:text-white">
-                Send Us a Message
+                {content.formTitle}
               </h3>
 
               {isSubmitted ? (
@@ -187,9 +207,9 @@ export default function Contact() {
                   animate={{ opacity: 1, y: 0 }}
                   className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 p-4 rounded-lg text-center"
                 >
-                  <p className="font-medium">Thank you for your message!</p>
+                  <p className="font-medium">{content.successMessage.split('!')[0]}!</p>
                   <p className="text-sm mt-1">
-                    We&apos;ll get back to you as soon as possible.
+                    {content.successMessage.split('!')[1]}
                   </p>
                 </motion.div>
               ) : (

@@ -127,15 +127,6 @@ export interface Portfolio {
   projects: PortfolioProject[];
 }
 
-export interface BlogPost {
-  title: string;
-  excerpt: string;
-  featuredImageUrl: string;
-  author: string;
-  category: string;
-  publishedAt: string;
-  slug: string;
-}
 
 
 export interface Contact {

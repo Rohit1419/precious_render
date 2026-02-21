@@ -1,14 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { MagicCard } from "@/components/ui/magic-card";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import type { SiteSettings } from "@/lib/sanity/types";
 
-export default function Header() {
+interface HeaderProps {
+  siteSettings?: SiteSettings | null;
+}
+
+export default function Header({ siteSettings }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -23,6 +28,9 @@ export default function Header() {
     { name: "Contact", href: "#contact" },
   ];
 
+  const logoUrl = siteSettings?.logoUrl || "/Precious Render.png";
+  const siteName = siteSettings?.siteName || "Precious Render";
+
   return (
     <header className="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800">
       <div className="container mx-auto px-4 max-w-7xl">
@@ -30,8 +38,8 @@ export default function Header() {
           <Link href="/" className="flex items-center">
             <div className="relative">
               <Image
-                src="/Precious Render.png"
-                alt="Precious Render Logo"
+                src={logoUrl}
+                alt={`${siteName} Logo`}
                 width={280}
                 height={100}
                 className="h-10 md:h-14 w-auto object-contain"

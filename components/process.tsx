@@ -9,46 +9,61 @@ import {
   Download,
   LifeBuoy,
 } from "lucide-react";
+import type { Process as ProcessType } from "@/lib/sanity/types";
 
-export default function Process() {
-  const steps = [
-    {
-      title: "CAD to Catalog Workflow Begins",
-      description:
-        "Our CAD to catalog process starts with your 3dm or matrix files-we handle the complete transformation to photorealistic jewelry renders",
-      icon: <FileCode className="h-8 w-8 text-emerald-500" />,
-    },
-    {
-      title: "Material Setup & Lighting Design",
-      description:
-        "We apply accurate materials from our extensive library and set up studio-quality HDRI lighting customized for your jewelry type and brand aesthetic.",
-      icon: <Palette className="h-8 w-8 text-emerald-500" />,
-    },
-    {
-      title: "Test Renders & Approval",
-      description:
-        "Within 24-48 hours, we provide test renders for your review. You can request adjustments to materials, lighting, angles, or camera position.",
-      icon: <Eye className="h-8 w-8 text-emerald-500" />,
-    },
-    {
-      title: "Full Production Rendering",
-      description:
-        "Once approved, our multi-PC rendering farm processes your complete order using optimized settings for maximum quality and efficiency.",
-      icon: <Cpu className="h-8 w-8 text-emerald-500" />,
-    },
-    {
-      title: "Final Delivery & Export",
-      description:
-        "Receive your high-resolution images (PNG/JPG) or 360° videos (MP4) organized by SKU, ready for immediate use on your website or marketing materials.",
-      icon: <Download className="h-8 w-8 text-emerald-500" />,
-    },
-    {
-      title: "Ongoing Support & Revisions",
-      description:
-        "Need material adjustments or additional angles? We maintain your project files and material libraries for quick revisions as your collection evolves.",
-      icon: <LifeBuoy className="h-8 w-8 text-emerald-500" />,
-    },
-  ];
+interface ProcessProps {
+  data: ProcessType | null;
+}
+
+const iconMap = {
+  fileCode: FileCode,
+  palette: Palette,
+  eye: Eye,
+  cpu: Cpu,
+  download: Download,
+  lifeBuoy: LifeBuoy,
+};
+
+export default function Process({ data }: ProcessProps) {
+  // Fallback data
+  const fallbackData = {
+    sectionTitle: "Our Rendering Process",
+    sectionDescription: "Our proven virtual jewelry inventory workflow ensures efficient delivery of photorealistic jewelry renders that exceed your expectations.",
+    steps: [
+      {
+        title: "CAD to Catalog Workflow Begins",
+        description: "Our CAD to catalog process starts with your 3dm or matrix files-we handle the complete transformation to photorealistic jewelry renders",
+        icon: "fileCode",
+      },
+      {
+        title: "Material Setup & Lighting Design",
+        description: "We apply accurate materials from our extensive library and set up studio-quality HDRI lighting customized for your jewelry type and brand aesthetic.",
+        icon: "palette",
+      },
+      {
+        title: "Test Renders & Approval",
+        description: "Within 24-48 hours, we provide test renders for your review. You can request adjustments to materials, lighting, angles, or camera position.",
+        icon: "eye",
+      },
+      {
+        title: "Full Production Rendering",
+        description: "Once approved, our multi-PC rendering farm processes your complete order using optimized settings for maximum quality and efficiency.",
+        icon: "cpu",
+      },
+      {
+        title: "Final Delivery & Export",
+        description: "Receive your high-resolution images (PNG/JPG) or 360° videos (MP4) organized by SKU, ready for immediate use on your website or marketing materials.",
+        icon: "download",
+      },
+      {
+        title: "Ongoing Support & Revisions",
+        description: "Need material adjustments or additional angles? We maintain your project files and material libraries for quick revisions as your collection evolves.",
+        icon: "lifeBuoy",
+      },
+    ],
+  };
+
+  const content = data || fallbackData;
 
   return (
     <section id="process" className="py-12 md:py-16">
@@ -64,36 +79,28 @@ export default function Process() {
             Our Process
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-neutral-900 dark:text-white">
-            Our Rendering Process
+            {content.sectionTitle}
           </h2>
           <p className="max-w-2xl mx-auto text-neutral-600 dark:text-neutral-400">
-            Our proven virtual jewelry inventory workflow ensures efficient delivery of photorealistic jewelry renders that exceed your expectations.
+            {content.sectionDescription}
           </p>
         </motion.div>
 
         <div className="max-w-4xl mx-auto">
-          {steps.map((step, index) => (
-            <TimelineItem
-              key={index}
-              step={index + 1}
-              title={step.title}
-              description={step.description}
-              icon={step.icon}
-              isLast={index === steps.length - 1}
-            />
-          ))}
+          {content.steps.map((step, index) => {
+            const Icon = iconMap[step.icon as keyof typeof iconMap] || FileCode;
+            return (
+              <TimelineItem
+                key={index}
+                step={index + 1}
+                title={step.title}
+                description={step.description}
+                icon={<Icon className="h-8 w-8 text-emerald-500" />}
+                isLast={index === content.steps.length - 1}
+              />
+            );
+          })}
         </div>
-
-        {/* <div className="text-center mt-16">
-          <motion.a
-            href="#contact"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center px-6 py-3 rounded-md bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-medium hover:shadow-lg transition-shadow"
-          >
-            Start Your Project
-          </motion.a>
-        </div> */}
       </div>
     </section>
   );

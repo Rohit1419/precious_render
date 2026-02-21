@@ -3,8 +3,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Linkedin, Mail, Phone, MapPin, Instagram, Youtube, MessageCircle } from "lucide-react";
+import type { SiteSettings } from "@/lib/sanity/types";
 
-export default function Footer() {
+interface FooterProps {
+  siteSettings?: SiteSettings | null;
+}
+
+export default function Footer({ siteSettings }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
   const footerLinks = [
@@ -29,7 +34,6 @@ export default function Footer() {
     {
       title: "Resources",
       links: [
-        { name: "Blog", href: "/blog" },
         { name: "Pricing", href: "#pricing" },
         { name: "FAQ", href: "#faq" },
         { name: "Contact", href: "#contact" },
@@ -37,14 +41,34 @@ export default function Footer() {
     },
   ];
 
+  const logoUrl = siteSettings?.logoUrl || "/Precious Render.png";
+  const siteName = siteSettings?.siteName || "Precious Render";
+  const siteDescription = siteSettings?.siteDescription || "Specializing in photorealistic jewelry renders, CAD-to-catalog workflows, and on-demand jewelry manufacturing support for brands worldwide";
+  const contactEmail = siteSettings?.contactEmail || "contact@preciousrender.com";
+  const contactPhone = siteSettings?.contactPhone || "+91 XXXXX-XXXXX";
+  const address = siteSettings?.address || "Mumbai, Maharashtra, India";
+
   const socialLinks = [
     {
       icon: <Instagram size={20} />,
-      href: "https://instagram.com/",
+      href: siteSettings?.socialLinks?.instagram || "https://instagram.com/",
+      name: "Instagram"
     },
-    { icon: <Linkedin size={20} />, href: "https://linkedin.com/" },
-    { icon: <MessageCircle size={20} />, href: "https://whatsapp.com/" },
-    { icon: <Youtube size={20} />, href: "https://youtube.com/" },
+    { 
+      icon: <Linkedin size={20} />, 
+      href: siteSettings?.socialLinks?.linkedin || "https://linkedin.com/",
+      name: "LinkedIn"
+    },
+    { 
+      icon: <MessageCircle size={20} />, 
+      href: siteSettings?.socialLinks?.whatsapp || "https://whatsapp.com/",
+      name: "WhatsApp"
+    },
+    { 
+      icon: <Youtube size={20} />, 
+      href: siteSettings?.socialLinks?.youtube || "https://youtube.com/",
+      name: "YouTube"
+    },
   ];
 
   return (
@@ -56,8 +80,8 @@ export default function Footer() {
             <Link href="/" className="flex items-center">
               <div className="relative">
                 <Image
-                  src="/Precious Render.png"
-                  alt="Precious Render Logo"
+                  src={logoUrl}
+                  alt={`${siteName} Logo`}
                   width={320}
                   height={120}
                   className="h-16 w-auto object-contain"
@@ -66,31 +90,31 @@ export default function Footer() {
               </div>
             </Link>
             <p className="mt-4 text-neutral-600 dark:text-neutral-400 max-w-md">
-              Specializing in photorealistic jewelry renders, CAD-to-catalog workflows, and on-demand jewelry manufacturing support for brands worldwide
+              {siteDescription}
             </p>
             <div className="mt-6 space-y-2">
               <div className="flex items-center">
                 <Mail size={16} className="mr-2 text-emerald-500" />
                 <a
-                  href="mailto:contact@preciousrender.com"
+                  href={`mailto:${contactEmail}`}
                   className="text-neutral-700 dark:text-neutral-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
                 >
-                  contact@preciousrender.com
+                  {contactEmail}
                 </a>
               </div>
               <div className="flex items-center">
                 <Phone size={16} className="mr-2 text-emerald-500" />
                 <a
-                  href="tel:+91XXXXXXXXXX"
+                  href={`tel:${contactPhone.replace(/\s/g, '')}`}
                   className="text-neutral-700 dark:text-neutral-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
                 >
-                  +91 XXXXX-XXXXX
+                  {contactPhone}
                 </a>
               </div>
               <div className="flex items-start">
                 <MapPin size={16} className="mr-2 mt-1 text-emerald-500" />
                 <p className="text-neutral-600 dark:text-neutral-400">
-                  Mumbai, Maharashtra, India
+                  {address}
                 </p>
               </div>
             </div>
@@ -121,17 +145,17 @@ export default function Footer() {
         {/* Bottom Section */}
         <div className="mt-12 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex flex-col md:flex-row justify-between items-center">
           <p className="text-neutral-500 dark:text-neutral-500 text-sm">
-            © {currentYear} Precious Render. All rights reserved.
+            © {currentYear} {siteName}. All rights reserved.
           </p>
           <div className="flex space-x-4 mt-4 md:mt-0">
-            {socialLinks.map((link, index) => (
+            {socialLinks.map((link) => (
               <a
-                key={index}
+                key={link.name}
                 href={link.href}
                 className="text-neutral-600 dark:text-neutral-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`Visit our ${link.href.includes("instagram") ? "Instagram" : link.href.includes("linkedin") ? "LinkedIn" : link.href.includes("whatsapp") ? "WhatsApp" : "YouTube"} page`}
+                aria-label={`Visit our ${link.name} page`}
               >
                 {link.icon}
               </a>
