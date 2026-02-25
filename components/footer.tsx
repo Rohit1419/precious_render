@@ -3,49 +3,64 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Linkedin, Mail, Phone, MapPin, Instagram, Youtube, MessageCircle } from "lucide-react";
+import type { SiteSettings } from "@/lib/sanity/types";
 
-export default function Footer() {
+interface FooterProps {
+  data?: SiteSettings | null;
+}
+
+const DEFAULT_FOOTER_LINKS = [
+  {
+    title: "Services",
+    links: [
+      { name: "Still Images", href: "#services" },
+      { name: "360° Animations", href: "#services" },
+      { name: "Marketing Videos", href: "#services" },
+      { name: "On-Body Visuals", href: "#services" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { name: "About Us", href: "#about" },
+      { name: "Portfolio", href: "#portfolio" },
+      { name: "Process", href: "#process" },
+      { name: "Testimonials", href: "#testimonials" },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      { name: "Blog", href: "/blog" },
+      { name: "Pricing", href: "#pricing" },
+      { name: "FAQ", href: "#faq" },
+      { name: "Contact", href: "#contact" },
+    ],
+  },
+];
+
+export default function Footer({ data }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
-  const footerLinks = [
-    {
-      title: "Services",
-      links: [
-        { name: "Still Images", href: "#services" },
-        { name: "360° Animations", href: "#services" },
-        { name: "Marketing Videos", href: "#services" },
-        { name: "On-Body Visuals", href: "#services" },
-      ],
-    },
-    {
-      title: "Company",
-      links: [
-        { name: "About Us", href: "#about" },
-        { name: "Portfolio", href: "#portfolio" },
-        { name: "Process", href: "#process" },
-        { name: "Testimonials", href: "#testimonials" },
-      ],
-    },
-    {
-      title: "Resources",
-      links: [
-        { name: "Blog", href: "/blog" },
-        { name: "Pricing", href: "#pricing" },
-        { name: "FAQ", href: "#faq" },
-        { name: "Contact", href: "#contact" },
-      ],
-    },
-  ];
+  const logoSrc = data?.logoUrl ?? "/Precious Render.png";
+  const siteName = data?.siteName ?? "Precious Render";
+  const tagline = data?.tagline ?? "Specializing in photorealistic jewelry renders, CAD-to-catalog workflows, and on-demand jewelry manufacturing support for brands worldwide";
+  const email = data?.email ?? "contact@preciousrender.com";
+  const phone = data?.phone ?? "+91 XXXXX-XXXXX";
+  const address = data?.address ?? "Mumbai, Maharashtra, India";
 
-  const socialLinks = [
-    {
-      icon: <Instagram size={20} />,
-      href: "https://instagram.com/",
-    },
-    { icon: <Linkedin size={20} />, href: "https://linkedin.com/" },
-    { icon: <MessageCircle size={20} />, href: "https://whatsapp.com/" },
-    { icon: <Youtube size={20} />, href: "https://youtube.com/" },
-  ];
+  const footerLinkGroups =
+    data?.footerLinkGroups?.length
+      ? data.footerLinkGroups.map((group) => ({
+          title: group.title,
+          links: group.links.map((l) => ({ name: l.label, href: l.href })),
+        }))
+      : DEFAULT_FOOTER_LINKS;
+
+  const instagramUrl = data?.socialLinks?.instagram ?? "https://instagram.com/";
+  const linkedinUrl = data?.socialLinks?.linkedin ?? "https://linkedin.com/";
+  const whatsappUrl = data?.socialLinks?.whatsapp ?? "https://whatsapp.com/";
+  const youtubeUrl = data?.socialLinks?.youtube ?? "https://youtube.com/";
 
   return (
     <footer className="bg-white dark:bg-neutral-950 text-neutral-700 dark:text-neutral-300 pt-12 pb-6">
@@ -56,8 +71,8 @@ export default function Footer() {
             <Link href="/" className="flex items-center">
               <div className="relative">
                 <Image
-                  src="/Precious Render.png"
-                  alt="Precious Render Logo"
+                  src={logoSrc}
+                  alt={`${siteName} Logo`}
                   width={320}
                   height={120}
                   className="h-16 w-auto object-contain"
@@ -66,38 +81,30 @@ export default function Footer() {
               </div>
             </Link>
             <p className="mt-4 text-neutral-600 dark:text-neutral-400 max-w-md">
-              Specializing in photorealistic jewelry renders, CAD-to-catalog workflows, and on-demand jewelry manufacturing support for brands worldwide
+              {tagline}
             </p>
             <div className="mt-6 space-y-2">
               <div className="flex items-center">
                 <Mail size={16} className="mr-2 text-emerald-500" />
-                <a
-                  href="mailto:contact@preciousrender.com"
-                  className="text-neutral-700 dark:text-neutral-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-                >
-                  contact@preciousrender.com
+                <a href={`mailto:${email}`} className="text-neutral-700 dark:text-neutral-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                  {email}
                 </a>
               </div>
               <div className="flex items-center">
                 <Phone size={16} className="mr-2 text-emerald-500" />
-                <a
-                  href="tel:+91XXXXXXXXXX"
-                  className="text-neutral-700 dark:text-neutral-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-                >
-                  +91 XXXXX-XXXXX
+                <a href={`tel:${phone}`} className="text-neutral-700 dark:text-neutral-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                  {phone}
                 </a>
               </div>
               <div className="flex items-start">
                 <MapPin size={16} className="mr-2 mt-1 text-emerald-500" />
-                <p className="text-neutral-600 dark:text-neutral-400">
-                  Mumbai, Maharashtra, India
-                </p>
+                <p className="text-neutral-600 dark:text-neutral-400">{address}</p>
               </div>
             </div>
           </div>
 
           {/* Footer Links */}
-          {footerLinks.map((section) => (
+          {footerLinkGroups.map((section) => (
             <div key={section.title}>
               <h3 className="text-lg font-semibold mb-4 text-neutral-800 dark:text-neutral-200">
                 {section.title}
@@ -105,10 +112,7 @@ export default function Footer() {
               <ul className="space-y-2">
                 {section.links.map((link) => (
                   <li key={link.name}>
-                    <Link
-                      href={link.href}
-                      className="text-neutral-600 dark:text-neutral-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-                    >
+                    <Link href={link.href} className="text-neutral-600 dark:text-neutral-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                       {link.name}
                     </Link>
                   </li>
@@ -121,21 +125,21 @@ export default function Footer() {
         {/* Bottom Section */}
         <div className="mt-12 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex flex-col md:flex-row justify-between items-center">
           <p className="text-neutral-500 dark:text-neutral-500 text-sm">
-            © {currentYear} Precious Render. All rights reserved.
+            © {currentYear} {siteName}. All rights reserved.
           </p>
           <div className="flex space-x-4 mt-4 md:mt-0">
-            {socialLinks.map((link, index) => (
-              <a
-                key={index}
-                href={link.href}
-                className="text-neutral-600 dark:text-neutral-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Visit our ${link.href.includes("instagram") ? "Instagram" : link.href.includes("linkedin") ? "LinkedIn" : link.href.includes("whatsapp") ? "WhatsApp" : "YouTube"} page`}
-              >
-                {link.icon}
-              </a>
-            ))}
+            <a href={instagramUrl} className="text-neutral-600 dark:text-neutral-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <Instagram size={20} />
+            </a>
+            <a href={linkedinUrl} className="text-neutral-600 dark:text-neutral-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <Linkedin size={20} />
+            </a>
+            <a href={whatsappUrl} className="text-neutral-600 dark:text-neutral-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+              <MessageCircle size={20} />
+            </a>
+            <a href={youtubeUrl} className="text-neutral-600 dark:text-neutral-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+              <Youtube size={20} />
+            </a>
           </div>
         </div>
       </div>

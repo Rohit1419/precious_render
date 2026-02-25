@@ -33,7 +33,12 @@ export default function Hero({ data }: HeroProps) {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
-  const words = data?.rotatingWords?.length ? data.rotatingWords : DEFAULT_WORDS;
+  // Sanity may return rotatingWords as plain strings OR as {_key, word} objects
+  // (depending on how they were seeded). Normalize to string[] in either case.
+  const rawWords = data?.rotatingWords as unknown as Array<string | { word: string }> | undefined;
+  const words = rawWords?.length
+    ? rawWords.map((w) => (typeof w === "string" ? w : w.word)).filter(Boolean) as string[]
+    : DEFAULT_WORDS;
   const headlinePrefix = data?.headlinePrefix ?? "Premium Jewelry";
   const headlineSuffix = data?.headlineSuffix ?? "Rendering Services for";
   const headlineHighlight = data?.headlineHighlight ?? "Modern Jewelers";

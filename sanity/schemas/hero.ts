@@ -48,6 +48,15 @@ export default defineType({
       name: 'primaryCtaHref',
       title: 'Primary CTA Button Link',
       type: 'string',
+       options: {
+        list: [
+          { title: 'Services', value: '#services' },
+          { title: 'Portfolio', value: '#portfolio' },
+          { title: 'Pricing', value: '#pricing' },
+        ],
+        layout: 'dropdown', // 'dropdown' is the default layout for string lists
+      },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'secondaryCtaLabel',
@@ -58,6 +67,15 @@ export default defineType({
       name: 'secondaryCtaHref',
       title: 'Secondary CTA Button Link',
       type: 'string',
+      options: {
+        list: [
+          { title: 'Services', value: '#services' },
+          { title: 'Portfolio', value: '#portfolio' },
+          { title: 'Pricing', value: '#pricing' },
+        ],
+        layout: 'dropdown', // 'dropdown' is the default layout for string lists
+      },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'backgroundVideo',

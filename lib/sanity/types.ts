@@ -29,29 +29,28 @@ export interface FeaturesData {
 
 // ── Problem & Solution ────────────────────────────────────────────────────────
 export interface PainPoint {
+  icon?: string;
   title: string;
-  body: string;
-  riskLabel?: string;
+  description: string;
+  riskText?: string;
 }
 
 export interface Benefit {
+  icon?: string;
   title: string;
   description: string;
 }
 
-export interface CaseStudyStat {
-  label: string;
-}
-
 export interface ProblemSolutionData {
-  problemHeading?: string;
-  problemSubtitle?: string;
+  openingHeadlinePrimary?: string;
+  openingHeadlineAccent?: string;
+  openingSubheadline?: string;
   painPoints?: PainPoint[];
   solutionBadge?: string;
   solutionHeading?: string;
-  solutionBody?: string;
-  compareBeforeImageUrl?: string;
-  compareAfterImageUrl?: string;
+  solutionDescription?: string;
+  compareBeforeImage?: string;
+  compareAfterImage?: string;
   compareBeforeLabel?: string;
   compareAfterLabel?: string;
   solutionCtaLabel?: string;
@@ -60,19 +59,21 @@ export interface ProblemSolutionData {
   caseStudyLabel?: string;
   caseStudyHeading?: string;
   caseStudyQuote?: string;
-  caseStudyName?: string;
-  caseStudyBusiness?: string;
-  workingCapitalFreed?: string;
-  caseStudyStats?: CaseStudyStat[];
+  caseStudyAuthorName?: string;
+  caseStudyAuthorTitle?: string;
+  caseStudyStats?: string[];
   comparisonHeading?: string;
+  traditionalHeading?: string;
   traditionalImageUrl?: string;
   traditionalSteps?: string[];
   traditionalResult?: string;
+  virtualHeading?: string;
+  virtualBadge?: string;
   virtualImageUrl?: string;
   virtualSteps?: string[];
   virtualResult?: string;
-  closingCtaHeading?: string;
-  closingCtaBody?: string;
+  closingHeading?: string;
+  closingDescription?: string;
   closingCtaLabel?: string;
   closingCtaHref?: string;
 }
@@ -135,12 +136,14 @@ export interface Testimonial {
   quote: string;
   name: string;
   title: string;
-  imageUrl?: string;
+  image?: string;      // resolved URL from Sanity image asset
+  imageUrl?: string;   // external URL fallback (coalesced in GROQ)
 }
 
 export interface CompanyLogo {
   name: string;
-  logoUrl: string;
+  logo?: string;       // resolved URL from Sanity image asset
+  logoUrl?: string;    // external URL fallback (coalesced in GROQ)
   invertOnDark?: boolean;
 }
 
@@ -217,7 +220,7 @@ export interface NavItem {
 }
 
 export interface FooterLink {
-  name: string;
+  label: string;
   href: string;
 }
 
@@ -232,8 +235,8 @@ export interface SiteSettings {
   logoUrl?: string;
   faviconUrl?: string;
   tagline?: string;
-  contactEmail?: string;
-  contactPhone?: string;
+  email?: string;
+  phone?: string;
   address?: string;
   socialLinks?: SocialLinks;
   navItems?: NavItem[];

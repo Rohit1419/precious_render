@@ -27,6 +27,15 @@ export default defineType({
       name: 'ctaHref',
       title: 'CTA Button Link',
       type: 'string',
+       options: {
+        list: [
+          { title: 'Services', value: '#services' },
+          { title: 'Portfolio', value: '#portfolio' },
+          { title: 'Pricing', value: '#pricing' },
+        ],
+        layout: 'dropdown', // 'dropdown' is the default layout for string lists
+      },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'features',

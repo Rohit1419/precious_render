@@ -34,14 +34,14 @@ export const featuresQuery = groq`
 // ── Problem & Solution ────────────────────────────────────────────────────────
 export const problemSolutionQuery = groq`
   *[_type == "problemSolution"][0] {
-    problemHeading,
-    problemSubtitle,
-    painPoints[] { title, body, riskLabel },
+    "openingHeadlinePrimary": problemHeading,
+    "openingSubheadline": problemSubtitle,
+    painPoints[] { title, "description": body, "riskText": riskLabel },
     solutionBadge,
     solutionHeading,
-    solutionBody,
-    "compareBeforeImageUrl": compareBeforeImage.asset->url,
-    "compareAfterImageUrl": compareAfterImage.asset->url,
+    "solutionDescription": solutionBody,
+    "compareBeforeImage": compareBeforeImage.asset->url,
+    "compareAfterImage": compareAfterImage.asset->url,
     compareBeforeLabel,
     compareAfterLabel,
     solutionCtaLabel,
@@ -50,10 +50,9 @@ export const problemSolutionQuery = groq`
     caseStudyLabel,
     caseStudyHeading,
     caseStudyQuote,
-    caseStudyName,
-    caseStudyBusiness,
-    workingCapitalFreed,
-    caseStudyStats[] { label },
+    "caseStudyAuthorName": caseStudyName,
+    "caseStudyAuthorTitle": caseStudyBusiness,
+    "caseStudyStats": caseStudyStats[].label,
     comparisonHeading,
     "traditionalImageUrl": traditionalImage.asset->url,
     traditionalSteps,
@@ -61,8 +60,8 @@ export const problemSolutionQuery = groq`
     "virtualImageUrl": virtualImage.asset->url,
     virtualSteps,
     virtualResult,
-    closingCtaHeading,
-    closingCtaBody,
+    "closingHeading": closingCtaHeading,
+    "closingDescription": closingCtaBody,
     closingCtaLabel,
     closingCtaHref
   }
@@ -130,12 +129,11 @@ export const testimonialsQuery = groq`
       quote,
       name,
       title,
-      "imageUrl": image.asset->url,
-      imageUrl
+      "imageUrl": coalesce(image.asset->url, imageUrl)
     },
     companyLogos[] {
       name,
-      "logoUrl": logo.asset->url,
+      "logoUrl": coalesce(logo.asset->url, logoUrl),
       invertOnDark
     }
   }
@@ -216,14 +214,14 @@ export const siteSettingsQuery = groq`
     "logoUrl": logo.asset->url,
     "faviconUrl": favicon.asset->url,
     tagline,
-    contactEmail,
-    contactPhone,
+    "email": contactEmail,
+    "phone": contactPhone,
     address,
     socialLinks,
     navItems[] { label, href },
     footerLinkGroups[] {
       title,
-      links[] { name, href }
+      links[] { "label": name, href }
     }
   }
 `;

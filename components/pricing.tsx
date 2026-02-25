@@ -2,13 +2,13 @@
 
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
-import type { PricingData } from "@/lib/sanity/types";
+import type { PricingData, PricingPlan } from "@/lib/sanity/types";
 
 interface PricingProps {
   data?: PricingData | null;
 }
 
-const DEFAULT_PLANS = [
+const DEFAULT_PLANS: PricingPlan[] = [
   {
     name: "Essential Product Catalogue",
     description: "Perfect starter bundle for high-converting product listings across all metal colors.",
