@@ -1,21 +1,28 @@
 import { groq } from 'next-sanity';
 
+// ── Hero ─────────────────────────────────────────────────────────────────────
 export const heroQuery = groq`
   *[_type == "hero"][0] {
-    title,
-    subtitle,
-    highlightText,
+    headlinePrefix,
+    headlineSuffix,
+    headlineHighlight,
+    staticLeadText,
     rotatingWords,
-    ctaPrimary,
-    ctaSecondary,
+    primaryCtaLabel,
+    primaryCtaHref,
+    secondaryCtaLabel,
+    secondaryCtaHref,
     "backgroundVideoUrl": backgroundVideo.asset->url
   }
 `;
 
+// ── Features ─────────────────────────────────────────────────────────────────
 export const featuresQuery = groq`
   *[_type == "features"][0] {
     sectionTitle,
     sectionDescription,
+    ctaLabel,
+    ctaHref,
     features[] {
       title,
       description,
@@ -24,8 +31,47 @@ export const featuresQuery = groq`
   }
 `;
 
+// ── Problem & Solution ────────────────────────────────────────────────────────
+export const problemSolutionQuery = groq`
+  *[_type == "problemSolution"][0] {
+    problemHeading,
+    problemSubtitle,
+    painPoints[] { title, body, riskLabel },
+    solutionBadge,
+    solutionHeading,
+    solutionBody,
+    "compareBeforeImageUrl": compareBeforeImage.asset->url,
+    "compareAfterImageUrl": compareAfterImage.asset->url,
+    compareBeforeLabel,
+    compareAfterLabel,
+    solutionCtaLabel,
+    solutionCtaHref,
+    benefits[] { title, description },
+    caseStudyLabel,
+    caseStudyHeading,
+    caseStudyQuote,
+    caseStudyName,
+    caseStudyBusiness,
+    workingCapitalFreed,
+    caseStudyStats[] { label },
+    comparisonHeading,
+    "traditionalImageUrl": traditionalImage.asset->url,
+    traditionalSteps,
+    traditionalResult,
+    "virtualImageUrl": virtualImage.asset->url,
+    virtualSteps,
+    virtualResult,
+    closingCtaHeading,
+    closingCtaBody,
+    closingCtaLabel,
+    closingCtaHref
+  }
+`;
+
+// ── Services ──────────────────────────────────────────────────────────────────
 export const servicesQuery = groq`
   *[_type == "services"][0] {
+    badge,
     sectionTitle,
     sectionDescription,
     services[] {
@@ -37,51 +83,32 @@ export const servicesQuery = groq`
   }
 `;
 
-export const pricingQuery = groq`
-  *[_type == "pricing"][0] {
+// ── Portfolio ─────────────────────────────────────────────────────────────────
+export const portfolioConfigQuery = groq`
+  *[_type == "portfolioConfig"][0] {
+    badge,
     sectionTitle,
-    sectionDescription,
-    plans[] {
-      name,
-      description,
-      price,
-      highlighted,
-      features[]
-    }
+    categories[] { id, label, description }
   }
 `;
 
-export const faqQuery = groq`
-  *[_type == "faq"][0] {
-    sectionTitle,
-    sectionDescription,
-    faqs[] {
-      question,
-      answer
-    }
+export const portfolioProjectsQuery = groq`
+  *[_type == "portfolioProject"] | order(order asc) {
+    _id,
+    title,
+    category,
+    description,
+    "thumbnailUrl": thumbnail.asset->url,
+    isVideo,
+    videoUrl,
+    order
   }
 `;
 
-export const testimonialsQuery = groq`
-  *[_type == "testimonials"][0] {
-    sectionTitle,
-    sectionDescription,
-    testimonials[] {
-      quote,
-      name,
-      title,
-      "imageUrl": image.asset->url
-    },
-    companyLogos[] {
-      name,
-      "logoUrl": logo.asset->url,
-      invertOnDark
-    }
-  }
-`;
-
+// ── Process ───────────────────────────────────────────────────────────────────
 export const processQuery = groq`
   *[_type == "process"][0] {
+    badge,
     sectionTitle,
     sectionDescription,
     steps[] {
@@ -92,15 +119,111 @@ export const processQuery = groq`
   }
 `;
 
+// ── Testimonials ──────────────────────────────────────────────────────────────
+export const testimonialsQuery = groq`
+  *[_type == "testimonials"][0] {
+    badge,
+    sectionTitle,
+    sectionDescription,
+    footerLabel,
+    testimonials[] {
+      quote,
+      name,
+      title,
+      "imageUrl": image.asset->url,
+      imageUrl
+    },
+    companyLogos[] {
+      name,
+      "logoUrl": logo.asset->url,
+      invertOnDark
+    }
+  }
+`;
+
+// ── Pricing ───────────────────────────────────────────────────────────────────
+export const pricingQuery = groq`
+  *[_type == "pricing"][0] {
+    badge,
+    sectionTitle,
+    sectionDescription,
+    footerText,
+    footerCtaLabel,
+    footerCtaHref,
+    plans[] {
+      name,
+      description,
+      price,
+      priceSuffix,
+      highlighted,
+      features[],
+      ctaLabel,
+      ctaHref
+    }
+  }
+`;
+
+// ── FAQ ───────────────────────────────────────────────────────────────────────
+export const faqQuery = groq`
+  *[_type == "faq"][0] {
+    badge,
+    sectionTitle,
+    sectionDescription,
+    faqs[] {
+      question,
+      answer
+    }
+  }
+`;
+
+// ── Blog ──────────────────────────────────────────────────────────────────────
+export const blogPostsQuery = groq`
+  *[_type == "blogPost"] | order(publishedAt desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    category,
+    readTime,
+    excerpt,
+    "coverImageUrl": coverImage.asset->url,
+    coverImageUrl,
+    author,
+    publishedAt
+  }
+`;
+
+export const blogPostBySlugQuery = groq`
+  *[_type == "blogPost" && slug.current == $slug][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    category,
+    readTime,
+    excerpt,
+    "coverImageUrl": coverImage.asset->url,
+    coverImageUrl,
+    author,
+    publishedAt,
+    body
+  }
+`;
+
+// ── Site Settings ─────────────────────────────────────────────────────────────
 export const siteSettingsQuery = groq`
   *[_type == "siteSettings"][0] {
     siteName,
     siteDescription,
     "logoUrl": logo.asset->url,
     "faviconUrl": favicon.asset->url,
+    tagline,
     contactEmail,
     contactPhone,
     address,
-    socialLinks
+    socialLinks,
+    navItems[] { label, href },
+    footerLinkGroups[] {
+      title,
+      links[] { name, href }
+    }
   }
 `;

@@ -4,6 +4,18 @@ export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2024-01-01',
-  useCdn: true, // Set to false for server-side rendering
+  useCdn: true,
   perspective: 'published',
+});
+
+/**
+ * Write client — only used server-side (seed scripts, webhooks).
+ * Requires SANITY_API_WRITE_TOKEN in environment — NEVER expose to the browser.
+ */
+export const writeClient = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '',
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+  apiVersion: '2024-01-01',
+  useCdn: false,
+  token: process.env.SANITY_API_WRITE_TOKEN,
 });

@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef } from "react";
-// import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { BorderBeam } from "@/components/ui/border-beam";
@@ -9,8 +8,22 @@ import { ShineBorder } from "@/components/ui/shine-border";
 import { TextAnimate } from "@/components/ui/text-animate";
 import { AuroraText } from "@/components/ui/aurora-text";
 import { WordRotate } from "@/components/ui/word-rotate";
+import type { HeroData } from "@/lib/sanity/types";
 
-export default function Hero() {
+interface HeroProps {
+  data?: HeroData | null;
+}
+
+const DEFAULT_WORDS = [
+  "Jewelry Renders",
+  "Virtual Inventory Solutions",
+  "360° Product Videos",
+  "Marketing Animations",
+  "CAD to Catalog Workflows",
+  "E-commerce Visuals",
+];
+
+export default function Hero({ data }: HeroProps) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -20,14 +33,16 @@ export default function Hero() {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
-  const words = [
-    "Jewelry Renders",
-    "Virtual Inventory Solutions",
-    "360° Product Videos",
-    "Marketing Animations",
-    "CAD to Catalog Workflows",
-    "E-commerce Visuals",
-  ];
+  const words = data?.rotatingWords?.length ? data.rotatingWords : DEFAULT_WORDS;
+  const headlinePrefix = data?.headlinePrefix ?? "Premium Jewelry";
+  const headlineSuffix = data?.headlineSuffix ?? "Rendering Services for";
+  const headlineHighlight = data?.headlineHighlight ?? "Modern Jewelers";
+  const staticLeadText = data?.staticLeadText ?? "We create beautiful";
+  const primaryCtaLabel = data?.primaryCtaLabel ?? "Request a Quote";
+  const primaryCtaHref = data?.primaryCtaHref ?? "#contact";
+  const secondaryCtaLabel = data?.secondaryCtaLabel ?? "View Portfolio";
+  const secondaryCtaHref = data?.secondaryCtaHref ?? "#portfolio";
+  const videoSrc = data?.backgroundVideoUrl ?? "/Precious render.mp4";
 
   return (
     <div
@@ -44,7 +59,7 @@ export default function Hero() {
         preload="metadata"
         className="absolute top-0 left-0 w-full h-full object-cover opacity-30"
       >
-        <source src="/Precious render.mp4" type="video/mp4" />
+        <source src={videoSrc} type="video/mp4" />
       </video>
 
       <motion.div
@@ -63,7 +78,7 @@ export default function Hero() {
               by="word"
               className="text-neutral-900 dark:text-white"
             >
-              Premium Jewelry
+              {headlinePrefix}
             </TextAnimate>
             <TextAnimate
               animation="blurInUp"
@@ -71,7 +86,7 @@ export default function Hero() {
               className="text-neutral-900 dark:text-white"
               delay={0.5}
             >
-              Rendering Services for
+              {headlineSuffix}
             </TextAnimate>
           </h1>
 
@@ -80,20 +95,12 @@ export default function Hero() {
               className="text-4xl md:text-6xl lg:text-7xl font-bold text-emerald-500"
               colors={["#10b981", "#06b6d4", "#0ea5e9", "#10b981"]}
             >
-              Modern Jewelers
+              {headlineHighlight}
             </AuroraText>
           </div>
 
-          {/* <div className="mb-6 md:mb-8">
-            <TextAnimate
-              animation="blurInUp"
-              by="word"
-              className="text-3xl md:text-5xl lg:text-6xl font-bold text-neutral-900 dark:text-white"
-            ></TextAnimate>
-          </div> */}
-
           <div className="text-lg md:text-xl font-medium mb-8 md:mb-10 text-neutral-700 dark:text-neutral-300 h-24 md:h-20">
-            We create beautiful{" "}
+            {staticLeadText}{" "}
             <WordRotate
               words={words}
               className="text-emerald-500 font-semibold"
@@ -109,12 +116,12 @@ export default function Hero() {
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 mb-10 md:mb-14">
             <motion.a
-              href="#contact"
+              href={primaryCtaHref}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="relative px-6 sm:px-8 py-3 sm:py-4 rounded-md bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-medium flex items-center justify-center hover:shadow-lg transition-shadow overflow-hidden"
             >
-              Request a Quote
+              {primaryCtaLabel}
               <ArrowRight size={16} className="ml-2" />
               <BorderBeam
                 duration={3}
@@ -124,12 +131,12 @@ export default function Hero() {
               />
             </motion.a>
             <motion.a
-              href="#portfolio"
+              href={secondaryCtaHref}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="relative px-6 sm:px-8 py-3 sm:py-4 rounded-md bg-white text-neutral-900 font-bold flex items-center justify-center hover:bg-neutral-100 transition-colors overflow-hidden shadow-lg"
             >
-              View Portfolio
+              {secondaryCtaLabel}
             </motion.a>
           </div>
 
