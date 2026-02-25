@@ -31,8 +31,8 @@ const client = createClient({ projectId, dataset, token, apiVersion: "2024-01-01
  * Replace the published document AND delete its draft so that Sanity Studio
  * always shows the freshly seeded content instead of a stale draft.
  */
-async function upsert(doc: Record<string, unknown>) {
-  const id = doc._id as string;
+async function upsert(doc: Record<string, unknown> & { _id: string; _type: string }) {
+  const id = doc._id;
   await client.createOrReplace(doc);
   // Delete draft if it exists — ignore 404
   await client.delete(`drafts.${id}`).catch(() => null);
