@@ -11,21 +11,28 @@ import Blog from "@/components/blog";
 import FAQ from "@/components/faq";
 import ContactForm from "@/components/contact-form";
 import Footer from "@/components/footer";
+import { getAllLandingPageData } from "@/lib/sanity/sanityFetch";
 
-export default function Home() {
+export const revalidate = 3;
+
+export default async function Home() {
+  const data = await getAllLandingPageData();
+
   return (
     <main className="min-h-screen">
-      <Header />
-      <Hero />
-      <Features />
-      <ProblemSolution />
-      <Services />
-      <Portfolio />
-      <Process />
-      <Testimonials />
-      <Pricing />
-      <FAQ />
-      <Footer />
+      <Header data={data?.siteSettings} />
+      <Hero data={data?.hero} />
+      <Features data={data?.features} />
+      <ProblemSolution data={data?.problemSolution} />
+      <Services data={data?.services} />
+      <Portfolio data={{ config: data?.portfolioConfig, projects: data?.portfolioProjects ?? [] }} />
+      <Process data={data?.process} />
+      <Testimonials data={data?.testimonials} />
+      <Pricing data={data?.pricing} />
+      <FAQ data={data?.faq} />
+      <Blog data={data?.blogPosts} />
+      <ContactForm data={data?.siteSettings} />
+      <Footer data={data?.siteSettings} />
     </main>
   );
 }

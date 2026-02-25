@@ -5,6 +5,16 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, X, Play } from "lucide-react";
 import { CompareSlider } from "@/components/ui/compare-slider";
+import type { PortfolioConfig, PortfolioProject as CmsPortfolioProject } from "@/lib/sanity/types";
+
+interface PortfolioData {
+  config?: PortfolioConfig | null;
+  projects?: CmsPortfolioProject[];
+}
+
+interface PortfolioProps {
+  data?: PortfolioData | null;
+}
 
 interface Project {
   id: number;
@@ -21,11 +31,7 @@ interface Project {
   background?: "bright" | "dark";
 }
 
-export default function Portfolio() {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [activeCategory, setActiveCategory] = useState("still");
-
-  const categories = [
+const DEFAULT_CATEGORIES = [
     {
       id: "still",
       label: "Still Images",
@@ -47,6 +53,14 @@ export default function Portfolio() {
       description: "Realistic visualizations of jewelry worn on models to help customers visualize scale and style.",
     },
   ];
+
+export default function Portfolio({ data }: PortfolioProps) {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [activeCategory, setActiveCategory] = useState("still");
+
+  const categories = data?.config?.categories?.length
+    ? data.config.categories
+    : DEFAULT_CATEGORIES;
 
   // Helper to generate projects
   const generateProjects = () => {
@@ -192,7 +206,23 @@ export default function Portfolio() {
     return allProjects;
   };
 
-  const projects = useMemo(() => generateProjects(), []);
+  const projects = useMemo(() => {
+    if (data?.projects?.length) {
+      return data.projects.map((p, i): Project => ({
+        id: i + 1,
+        title: p.title,
+        category: p.category,
+        description: p.description ?? "High-resolution photorealistic render.",
+        image: p.thumbnailUrl ?? "",
+        url: "#",
+        technologies: [],
+        type: p.isVideo ? "video" : "image",
+        videoUrl: p.videoUrl,
+        background: "bright",
+      }));
+    }
+    return generateProjects();
+  }, [data?.projects]);
 
   const filteredProjects = useMemo(() => {
     return projects.filter((p) => p.category === activeCategory);
@@ -249,10 +279,10 @@ export default function Portfolio() {
           className="text-center mb-10"
         >
           <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300">
-            Our Portfolio
+            {data?.config?.badge ?? "Our Portfolio"}
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-neutral-900 dark:text-white">
-            Featured Projects
+            {data?.config?.sectionTitle ?? "Featured Projects"}
           </h2>
         </motion.div>
 

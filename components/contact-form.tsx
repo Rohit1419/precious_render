@@ -4,8 +4,16 @@ import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle, Loader2 } from "lucide-react";
 import { Confetti, ConfettiRef } from "@/components/ui/confetti";
+import type { SiteSettings } from "@/lib/sanity/types";
 
-export default function ContactForm() {
+interface ContactFormProps {
+  data?: SiteSettings | null;
+}
+
+export default function ContactForm({ data }: ContactFormProps) {
+  const email = data?.email ?? "contact@preciousrender.com";
+  const phone = data?.phone ?? "+91 XXXXX-XXXXX";
+  const address = data?.address ?? "Mumbai, Maharashtra, India";
   const [formState, setFormState] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
@@ -225,7 +233,7 @@ export default function ContactForm() {
               </div>
               <h3 className="text-lg font-semibold mb-1">Email Us</h3>
               <p className="text-neutral-600 dark:text-neutral-400">
-                contact@preciousrender.com
+                {email}
               </p>
             </div>
 
@@ -248,7 +256,7 @@ export default function ContactForm() {
               </div>
               <h3 className="text-lg font-semibold mb-1">Call Us</h3>
               <p className="text-neutral-600 dark:text-neutral-400">
-                +91 XXXXX-XXXXX
+                {phone}
               </p>
             </div>
 
@@ -277,7 +285,7 @@ export default function ContactForm() {
               </div>
               <h3 className="text-lg font-semibold mb-1">Visit Us</h3>
               <p className="text-neutral-600 dark:text-neutral-400">
-                Mumbai, Maharashtra, India
+                {address}
               </p>
             </div>
           </div>
