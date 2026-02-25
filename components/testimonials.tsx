@@ -106,10 +106,10 @@ export default function Testimonials({ data }: TestimonialsProps) {
     else if (info.offset.x < -50) { pauseTemporarily(); setDirection(1); setCurrentIndex((prev) => (prev + 1) % testimonials.length); }
   };
 
-  const testimonialVariants = {
+  const testimonialVariants: import("framer-motion").Variants = {
     enter: (dir: number) => ({ x: dir > 0 ? 300 : -300, opacity: 0, scale: 0.95 }),
-    center: { x: 0, opacity: 1, scale: 1, transition: { duration: 0.4, ease: "easeOut" } },
-    exit: (dir: number) => ({ x: dir > 0 ? -300 : 300, opacity: 0, scale: 0.95, transition: { duration: 0.4, ease: "easeIn" } }),
+    center: { x: 0, opacity: 1, scale: 1, transition: { duration: 0.4, ease: "easeOut" as const } },
+    exit: (dir: number) => ({ x: dir > 0 ? -300 : 300, opacity: 0, scale: 0.95, transition: { duration: 0.4, ease: "easeIn" as const } }),
   };
 
   const current = testimonials[currentIndex];
