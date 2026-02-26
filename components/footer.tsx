@@ -45,9 +45,7 @@ export default function Footer({ data }: FooterProps) {
   const logoSrc = data?.logoUrl ?? "/Precious Render.png";
   const siteName = data?.siteName ?? "Precious Render";
   const tagline = data?.tagline ?? "Specializing in photorealistic jewelry renders, CAD-to-catalog workflows, and on-demand jewelry manufacturing support for brands worldwide";
-  const email = data?.email ?? "contact@preciousrender.com";
-  const phone = data?.phone ?? "+91 XXXXX-XXXXX";
-  const address = data?.address ?? "Mumbai, Maharashtra, India";
+
 
   const footerLinkGroups =
     data?.footerLinkGroups?.length
@@ -83,7 +81,7 @@ export default function Footer({ data }: FooterProps) {
             <p className="mt-4 text-neutral-600 dark:text-neutral-400 max-w-md">
               {tagline}
             </p>
-            <div className="mt-6 space-y-2">
+            {/* <div className="mt-6 space-y-2">
               <div className="flex items-center">
                 <Mail size={16} className="mr-2 text-emerald-500" />
                 <a href={`mailto:${email}`} className="text-neutral-700 dark:text-neutral-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
@@ -100,7 +98,7 @@ export default function Footer({ data }: FooterProps) {
                 <MapPin size={16} className="mr-2 mt-1 text-emerald-500" />
                 <p className="text-neutral-600 dark:text-neutral-400">{address}</p>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Footer Links */}

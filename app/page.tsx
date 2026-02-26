@@ -7,7 +7,6 @@ import Portfolio from "@/components/portfolio";
 import Process from "@/components/process";
 import Testimonials from "@/components/testimonials";
 import Pricing from "@/components/pricing";
-import Blog from "@/components/blog";
 import FAQ from "@/components/faq";
 import ContactForm from "@/components/contact-form";
 import Footer from "@/components/footer";
@@ -30,7 +29,6 @@ export default async function Home() {
       <Testimonials data={data?.testimonials} />
       <Pricing data={data?.pricing} />
       <FAQ data={data?.faq} />
-      <Blog data={data?.blogPosts} />
       <ContactForm data={data?.siteSettings} />
       <Footer data={data?.siteSettings} />
     </main>

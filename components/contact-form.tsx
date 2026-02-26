@@ -212,7 +212,7 @@ export default function ContactForm({ data }: ContactFormProps) {
               </form>
             )}
           </motion.div>
-
+{/* 
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="text-center">
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 mb-4">
@@ -288,7 +288,7 @@ export default function ContactForm({ data }: ContactFormProps) {
                 {address}
               </p>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>
