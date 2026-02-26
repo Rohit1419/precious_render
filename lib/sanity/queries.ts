@@ -175,36 +175,36 @@ export const faqQuery = groq`
 `;
 
 // ── Blog ──────────────────────────────────────────────────────────────────────
-export const blogPostsQuery = groq`
-  *[_type == "blogPost"] | order(publishedAt desc) {
-    _id,
-    title,
-    "slug": slug.current,
-    category,
-    readTime,
-    excerpt,
-    "coverImageUrl": coverImage.asset->url,
-    coverImageUrl,
-    author,
-    publishedAt
-  }
-`;
+// export const blogPostsQuery = groq`
+//   *[_type == "blogPost"] | order(publishedAt desc) {
+//     _id,
+//     title,
+//     "slug": slug.current,
+//     category,
+//     readTime,
+//     excerpt,
+//     "coverImageUrl": coverImage.asset->url,
+//     coverImageUrl,
+//     author,
+//     publishedAt
+//   }
+// `;
 
-export const blogPostBySlugQuery = groq`
-  *[_type == "blogPost" && slug.current == $slug][0] {
-    _id,
-    title,
-    "slug": slug.current,
-    category,
-    readTime,
-    excerpt,
-    "coverImageUrl": coverImage.asset->url,
-    coverImageUrl,
-    author,
-    publishedAt,
-    body
-  }
-`;
+// export const blogPostBySlugQuery = groq`
+//   *[_type == "blogPost" && slug.current == $slug][0] {
+//     _id,
+//     title,
+//     "slug": slug.current,
+//     category,
+//     readTime,
+//     excerpt,
+//     "coverImageUrl": coverImage.asset->url,
+//     coverImageUrl,
+//     author,
+//     publishedAt,
+//     body
+//   }
+// `;
 
 // ── Site Settings ─────────────────────────────────────────────────────────────
 export const siteSettingsQuery = groq`

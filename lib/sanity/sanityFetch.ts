@@ -10,8 +10,8 @@ import {
   testimonialsQuery,
   pricingQuery,
   faqQuery,
-  blogPostsQuery,
-  blogPostBySlugQuery,
+  // blogPostsQuery,
+  // blogPostBySlugQuery,
   siteSettingsQuery,
 } from './queries';
 
@@ -108,25 +108,25 @@ export async function getFaqData() {
   }
 }
 
-export async function getBlogPosts() {
-  try {
-    const result = await client.fetch(blogPostsQuery);
-    return result ?? [];
-  } catch (error) {
-    console.error('[Sanity] Error fetching blog posts:', error);
-    return [];
-  }
-}
+// export async function getBlogPosts() {
+//   try {
+//     const result = await client.fetch(blogPostsQuery);
+//     return result ?? [];
+//   } catch (error) {
+//     console.error('[Sanity] Error fetching blog posts:', error);
+//     return [];
+//   }
+// }
 
-export async function getBlogPostBySlug(slug: string) {
-  try {
-    const result = await client.fetch(blogPostBySlugQuery, { slug });
-    return result ?? null;
-  } catch (error) {
-    console.error('[Sanity] Error fetching blog post by slug:', error);
-    return null;
-  }
-}
+// export async function getBlogPostBySlug(slug: string) {
+//   try {
+//     const result = await client.fetch(blogPostBySlugQuery, { slug });
+//     return result ?? null;
+//   } catch (error) {
+//     console.error('[Sanity] Error fetching blog post by slug:', error);
+//     return null;
+//   }
+// }
 
 export async function getSiteSettings() {
   try {
@@ -154,7 +154,7 @@ export async function getAllLandingPageData() {
       testimonials,
       pricing,
       faq,
-      blogPosts,
+      // blogPosts,
       siteSettings,
     ] = await Promise.all([
       getHeroData(),
@@ -166,7 +166,7 @@ export async function getAllLandingPageData() {
       getTestimonialsData(),
       getPricingData(),
       getFaqData(),
-      getBlogPosts(),
+      // getBlogPosts(),
       getSiteSettings(),
     ]);
 
@@ -181,7 +181,7 @@ export async function getAllLandingPageData() {
       testimonials,
       pricing,
       faq,
-      blogPosts,
+      // blogPosts,
       siteSettings,
     };
   } catch (error) {

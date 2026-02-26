@@ -9,7 +9,7 @@ import process from './process'
 import testimonials from './testimonials'
 import pricing from './pricing'
 import faq from './faq'
-import blogPost from './blogPost'
+// import blogPost from './blogPost'
 
 export const schemaTypes = [
   // Singletons
@@ -25,5 +25,5 @@ export const schemaTypes = [
   faq,
   // Multi-document types
   portfolioProject,
-  blogPost,
+  // blogPost,
 ]
