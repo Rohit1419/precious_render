@@ -202,26 +202,6 @@ export default function Testimonials({ data }: TestimonialsProps) {
           </div>
         </ShineBorder>
 
-{/* brand logos  */}
-        {/* <div className="mt-16 text-center">
-          <p className="text-lg font-medium text-neutral-700 dark:text-neutral-300 mb-8">{footerLabel}</p>
-          <motion.div
-            className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            {companyLogos.map((logo, i) => (
-              <motion.div key={i} className="h-16 md:h-20 w-auto flex items-center justify-center px-4" initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: i * 0.1 }} viewport={{ once: true }}>
-                {logo.src && (
-                  <Image src={logo.src} alt={logo.alt} width={120} height={80} className={getLogoClassName(logo)} priority />
-                )}
-              </motion.div>
-            ))}
-          </motion.div>
-        </div> */}
-
 
         {/* brand logos  */}
         <div className="mt-16 text-center">
@@ -250,8 +230,8 @@ export default function Testimonials({ data }: TestimonialsProps) {
                     alt={logo.alt}
                     className={getLogoClassName(logo)}
                     style={{ 
-                      width: 'auto', 
-                      height: '100%', 
+                      width: '150px', 
+                      height: '90px', 
                       maxHeight: '80px',
                       objectFit: 'contain'
                     }}
