@@ -33,8 +33,7 @@ export default function Hero({ data }: HeroProps) {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
-  // Sanity may return rotatingWords as plain strings OR as {_key, word} objects
-  // (depending on how they were seeded). Normalize to string[] in either case.
+  // Normalize to string[] in either case
   const rawWords = data?.rotatingWords as unknown as Array<string | { word: string }> | undefined;
   const words = rawWords?.length
     ? rawWords.map((w) => (typeof w === "string" ? w : w.word)).filter(Boolean) as string[]
@@ -43,8 +42,8 @@ export default function Hero({ data }: HeroProps) {
   const headlineSuffix = data?.headlineSuffix ?? "Rendering Services for";
   const headlineHighlight = data?.headlineHighlight ?? "Modern Jewelers";
   const staticLeadText = data?.staticLeadText ?? "We create beautiful";
-  const primaryCtaLabel = data?.primaryCtaLabel ?? "Request a Quote";
-  const primaryCtaHref = data?.primaryCtaHref ?? "#contact";
+  const primaryCtaLabel = data?.primaryCtaLabel ?? "Get Started";
+  const primaryCtaHref = data?.primaryCtaHref ?? "https://wa.me/7823846641??text=Hello%20I%20want%20to%20know%20more%20about%20your%20services";
   const secondaryCtaLabel = data?.secondaryCtaLabel ?? "View Portfolio";
   const secondaryCtaHref = data?.secondaryCtaHref ?? "#portfolio";
   const videoSrc = data?.backgroundVideoUrl ?? "/Precious render.mp4";

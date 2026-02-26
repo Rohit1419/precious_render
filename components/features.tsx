@@ -47,7 +47,7 @@ export default function Features({ data }: FeaturesProps) {
   const sectionTitle = data?.sectionTitle ?? "Why Choose Precious Render";
   const sectionDescription = data?.sectionDescription ?? "We deliver photorealistic jewelry renders with exceptional detail, speed, and customer service to help you sell more.";
   const ctaLabel = data?.ctaLabel ?? "Get Started";
-  const ctaHref = data?.ctaHref ?? "#contact";
+  const ctaHref = data?.ctaHref ?? "https://wa.me/7823846641??text=Hello%20I%20want%20to%20know%20more%20about%20your%20services";
   const features = data?.features?.length ? data.features : DEFAULT_FEATURES;
 
   const fadeInUpVariants = {

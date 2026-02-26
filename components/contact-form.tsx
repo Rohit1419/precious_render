@@ -197,6 +197,7 @@ export default function ContactForm({ data }: ContactFormProps) {
                   <button
                     type="submit"
                     disabled={formState === "submitting"}
+          
                     className="w-full px-6 py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white rounded-md font-medium transition-colors flex items-center justify-center"
                   >
                     {formState === "submitting" ? (

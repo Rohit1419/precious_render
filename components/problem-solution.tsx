@@ -72,7 +72,7 @@ export default function ProblemSolution({ data }: ProblemSolutionProps) {
   const solutionHeading = data?.solutionHeading ?? "From CAD to Catalog - Without Stock";
   const solutionDescription = data?.solutionDescription ?? "What if you could showcase 1000+ jewelry designs to customers without manufacturing a single piece? With photorealistic 3D rendering, your entire catalog exists digitally-ready to be produced only when customers place orders.";
   const solutionCtaLabel = data?.solutionCtaLabel ?? "Get Started";
-  const solutionCtaHref = data?.solutionCtaHref ?? "#contact";
+  const solutionCtaHref = data?.solutionCtaHref ?? "https://wa.me/7823846641??text=Hello%20I%20want%20to%20know%20more%20about%20your%20services";
 
   const compareBeforeImage = data?.compareBeforeImage ?? "/before.png";
   const compareAfterImage = data?.compareAfterImage ?? "/after.png";
@@ -101,7 +101,7 @@ export default function ProblemSolution({ data }: ProblemSolutionProps) {
   const closingHeading = data?.closingHeading ?? "Ready to Build Your Virtual Jewelry Showroom?";
   const closingDescription = data?.closingDescription ?? "We specialize in creating photorealistic 3D renders that look identical to finished jewelry-so realistic, customers can't tell the difference. Here's how we help you transition to virtual inventory:";
   const closingCtaLabel = data?.closingCtaLabel ?? "Get Started";
-  const closingCtaHref = data?.closingCtaHref ?? "#contact";
+  const closingCtaHref = data?.closingCtaHref ?? "https://wa.me/7823846641??text=Hello%20I%20want%20to%20know%20more%20about%20your%20services";
 
   return (
     <section className="py-16 md:py-24 relative overflow-hidden bg-white dark:bg-neutral-950">
