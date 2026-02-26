@@ -233,6 +233,7 @@ export interface SiteSettings {
   siteName: string;
   siteDescription?: string;
   logoUrl?: string;
+  darkLogoUrl?: string;
   faviconUrl?: string;
   tagline?: string;
   email?: string;

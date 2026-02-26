@@ -1,10 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { BorderBeam } from "@/components/ui/border-beam";
-import { ShineBorder } from "@/components/ui/shine-border";
 import { TextAnimate } from "@/components/ui/text-animate";
 import { AuroraText } from "@/components/ui/aurora-text";
 import { WordRotate } from "@/components/ui/word-rotate";
@@ -25,6 +23,9 @@ const DEFAULT_WORDS = [
 
 export default function Hero({ data }: HeroProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const [email, setEmail] = useState("");
+  const [isHovered, setIsHovered] = useState(false);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -33,7 +34,6 @@ export default function Hero({ data }: HeroProps) {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
-  // Normalize to string[] in either case
   const rawWords = data?.rotatingWords as unknown as Array<string | { word: string }> | undefined;
   const words = rawWords?.length
     ? rawWords.map((w) => (typeof w === "string" ? w : w.word)).filter(Boolean) as string[]
@@ -42,18 +42,24 @@ export default function Hero({ data }: HeroProps) {
   const headlineSuffix = data?.headlineSuffix ?? "Rendering Services for";
   const headlineHighlight = data?.headlineHighlight ?? "Modern Jewelers";
   const staticLeadText = data?.staticLeadText ?? "We create beautiful";
-  const primaryCtaLabel = data?.primaryCtaLabel ?? "Get Started";
-  const primaryCtaHref = data?.primaryCtaHref ?? "https://wa.me/7823846641??text=Hello%20I%20want%20to%20know%20more%20about%20your%20services";
-  const secondaryCtaLabel = data?.secondaryCtaLabel ?? "View Portfolio";
-  const secondaryCtaHref = data?.secondaryCtaHref ?? "#portfolio";
+  const primaryCtaHref = data?.primaryCtaHref ?? "https://wa.me/7823846641?text=Hello%20I%20want%20to%20know%20more%20about%20your%20services";
   const videoSrc = data?.backgroundVideoUrl ?? "/Precious render.mp4";
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      // Open WhatsApp with the email in the message
+      const message = encodeURIComponent(`Hello! I'm interested in your services. My email is: ${email}`);
+      window.open(`${primaryCtaHref.split('?')[0]}?text=${message}`, '_blank');
+      setEmail("");
+    }
+  };
 
   return (
     <div
       ref={ref}
       className="relative pt-24 pb-16 md:pt-28 md:pb-20 overflow-hidden min-h-[100vh] flex flex-col justify-center"
     >
-      {/* Enhanced background with RetroGrid */}
       {/* Video Background */}
       <video
         autoPlay
@@ -71,11 +77,6 @@ export default function Hero({ data }: HeroProps) {
         className="container mx-auto px-4 relative z-10"
       >
         <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
-          {/* <div className="inline-flex items-center px-3 py-1 mb-6 md:mb-8 text-sm font-medium rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200">
-            <span className="flex h-2 w-2 mr-2 rounded-full bg-emerald-500" />
-            Premium Web Development Solutions
-          </div> */}
-
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 tracking-tight flex flex-col items-center gap-2">
             <TextAnimate
               animation="blurInUp"
@@ -118,55 +119,54 @@ export default function Hero({ data }: HeroProps) {
             />
           </div>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 mb-10 md:mb-14">
-            <motion.a
-              href={primaryCtaHref}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="relative px-6 sm:px-8 py-3 sm:py-4 rounded-md bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-medium flex items-center justify-center hover:shadow-lg transition-shadow overflow-hidden"
-            >
-              {primaryCtaLabel}
-              <ArrowRight size={16} className="ml-2" />
-              <BorderBeam
-                duration={3}
-                size={100}
-                colorFrom="#ffffff"
-                colorTo="#a3ffec"
-              />
-            </motion.a>
-            <motion.a
-              href={secondaryCtaHref}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="relative px-6 sm:px-8 py-3 sm:py-4 rounded-md bg-white text-neutral-900 font-bold flex items-center justify-center hover:bg-neutral-100 transition-colors overflow-hidden shadow-lg"
-            >
-              {secondaryCtaLabel}
-            </motion.a>
-          </div>
+          {/* Capsule Input with Button */}
+          <motion.form
+            onSubmit={handleSubmit}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
+            className="w-full max-w-3xl mb-10 md:mb-14 px-2"
+          >
+            <div className="relative flex items-center bg-neutral-100 dark:bg-neutral-800 rounded-full shadow-2xl overflow-hidden border border-neutral-200 dark:border-neutral-700 hover:shadow-emerald-500/20 transition-all duration-300">
+              {/* Emoji */}
+              <span className="absolute left-3 md:left-6 text-lg md:text-2xl pointer-events-none z-10">
+                👋
+              </span>
 
-          {/* Browser mockup with website preview */}
-          {/* <div className="relative w-full max-w-4xl mx-auto shadow-2xl rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800">
-            <div className="bg-neutral-100 dark:bg-neutral-800 p-2 sm:p-3 flex items-center space-x-2 border-b border-neutral-200 dark:border-neutral-700">
-              <div className="flex space-x-1">
-                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-500" />
-                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-yellow-500" />
-                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-500" />
-              </div>
-              <div className="flex-1 bg-white dark:bg-neutral-900 rounded-md h-5 sm:h-6 flex items-center justify-center text-xs text-neutral-500 dark:text-neutral-400">
-                preciousrender.com
-              </div>
-            </div>
-            <div className="w-full aspect-[16/9] relative bg-white dark:bg-neutral-900">
-              <Image
-                src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
-                alt="Precious Render preview"
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, (max-width: 1024px) 70vw, 60vw"
-                className="object-cover"
-                priority
+              {/* Input */}
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email here and we'll send you some 'magic'..."
+                required
+                className="flex-1 bg-transparent pl-10 md:pl-16 pr-2 md:pr-4 py-4 md:py-5 text-sm md:text-base text-neutral-900 dark:text-white placeholder:text-neutral-500 dark:placeholder:text-neutral-400 focus:outline-none md:placeholder:inline placeholder:hidden"
               />
+
+              
+              
+              {/* Submit Button */}
+              <motion.button
+                type="submit"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="relative flex items-center gap-2 md:gap-3 px-4 md:px-10 py-3 md:py-5 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white font-bold text-sm md:text-lg rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-emerald-400/50 m-1 whitespace-nowrap"
+              >
+                <span className="hidden sm:inline">Do it</span>
+                <span className="sm:hidden">Go</span>
+                <motion.div
+                  animate={{
+                    x: isHovered ? 5 : 0,
+                  }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ArrowRight className="w-4 h-4 md:w-6 md:h-6" />
+                </motion.div>
+              </motion.button>
             </div>
-          </div> */}
+          </motion.form>
         </div>
       </motion.div>
     </div>

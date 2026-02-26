@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -8,7 +8,7 @@ import { Menu, X } from "lucide-react";
 import { MagicCard } from "@/components/ui/magic-card";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import type { SiteSettings } from "@/lib/sanity/types";
-
+import { useTheme } from "next-themes";
 interface HeaderProps {
   data?: SiteSettings | null;
 }
@@ -23,28 +23,41 @@ const DEFAULT_MENU_ITEMS = [
 
 export default function Header({ data }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const {theme} = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   const menuItems = data?.navItems?.length ? data.navItems : DEFAULT_MENU_ITEMS;
-  const logoSrc = data?.logoUrl ?? "/Precious Render.png";
+  const darkLogo = data?.darkLogoUrl ?? "/darkLogo.png";
+  const logoSrc = data?.logoUrl ?? "/brightLogo.png";
+
+  const currentLogo = mounted && theme === "dark" ? darkLogo : logoSrc;
+
   const siteName = data?.siteName ?? "Precious Render";
+
+
 
   return (
     <header className="fixed top-0 left-0 right-0 z-40 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link href="/" className="flex items-center">
-            <div className="relative">
+              <div className="relative h-10 md:h-14 w-[180px] md:w-[280px]">
               <Image
-                src={logoSrc}
+                key={theme}
+                src={currentLogo}
                 alt={`${siteName} Logo`}
-                width={280}
-                height={100}
-                className="h-10 md:h-14 w-auto object-contain"
+                fill
+                className="object-contain object-left transition-opacity duration-300"
                 priority
+                sizes="(max-width: 768px) 180px, 280px"
               />
             </div>
           </Link>
