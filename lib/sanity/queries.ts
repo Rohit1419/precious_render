@@ -2,7 +2,7 @@ import { groq } from 'next-sanity';
 
 // ── Hero ─────────────────────────────────────────────────────────────────────
 export const heroQuery = groq`
-  *[_type == "hero"][0] {
+  *[_type == "hero" && _id == "hero"][0] {
     headlinePrefix,
     headlineSuffix,
     headlineHighlight,
@@ -18,7 +18,7 @@ export const heroQuery = groq`
 
 // ── Features ─────────────────────────────────────────────────────────────────
 export const featuresQuery = groq`
-  *[_type == "features"][0] {
+  *[_type == "features" && _id == "features"][0] {
     sectionTitle,
     sectionDescription,
     ctaLabel,
@@ -33,7 +33,7 @@ export const featuresQuery = groq`
 
 // ── Problem & Solution ────────────────────────────────────────────────────────
 export const problemSolutionQuery = groq`
-  *[_type == "problemSolution"][0] {
+  *[_type == "problemSolution" && _id == "problemSolution"][0] {
     "openingHeadlinePrimary": problemHeading,
     "openingSubheadline": problemSubtitle,
     painPoints[] { title, "description": body, "riskText": riskLabel },
@@ -69,7 +69,7 @@ export const problemSolutionQuery = groq`
 
 // ── Services ──────────────────────────────────────────────────────────────────
 export const servicesQuery = groq`
-  *[_type == "services"][0] {
+  *[_type == "services" && _id == "services"][0] {
     badge,
     sectionTitle,
     sectionDescription,
@@ -84,7 +84,7 @@ export const servicesQuery = groq`
 
 // ── Portfolio ─────────────────────────────────────────────────────────────────
 export const portfolioConfigQuery = groq`
-  *[_type == "portfolioConfig"][0] {
+  *[_type == "portfolioConfig" && _id == "portfolioConfig"][0] {
     badge,
     sectionTitle,
     categories[] { id, label, description }
@@ -106,7 +106,7 @@ export const portfolioProjectsQuery = groq`
 
 // ── Process ───────────────────────────────────────────────────────────────────
 export const processQuery = groq`
-  *[_type == "process"][0] {
+  *[_type == "process" && _id == "process"][0] {
     badge,
     sectionTitle,
     sectionDescription,
@@ -120,7 +120,7 @@ export const processQuery = groq`
 
 // ── Testimonials ──────────────────────────────────────────────────────────────
 export const testimonialsQuery = groq`
-  *[_type == "testimonials"][0] {
+  *[_type == "testimonials" && _id == "testimonials"][0] {
     badge,
     sectionTitle,
     sectionDescription,
@@ -141,7 +141,7 @@ export const testimonialsQuery = groq`
 
 // ── Pricing ───────────────────────────────────────────────────────────────────
 export const pricingQuery = groq`
-  *[_type == "pricing"][0] {
+  *[_type == "pricing" && _id == "pricing"][0] {
     badge,
     sectionTitle,
     sectionDescription,
@@ -163,7 +163,7 @@ export const pricingQuery = groq`
 
 // ── FAQ ───────────────────────────────────────────────────────────────────────
 export const faqQuery = groq`
-  *[_type == "faq"][0] {
+  *[_type == "faq" && _id == "faq"][0] {
     badge,
     sectionTitle,
     sectionDescription,
@@ -208,7 +208,7 @@ export const blogPostBySlugQuery = groq`
 
 // ── Site Settings ─────────────────────────────────────────────────────────────
 export const siteSettingsQuery = groq`
-  *[_type == "siteSettings"][0] {
+  *[_type == "siteSettings" && _id == "siteSettings"][0] {
     siteName,
     siteDescription,
     "logoUrl": logo.asset->url,
