@@ -192,19 +192,19 @@ export interface FaqData {
 }
 
 // ── Blog ──────────────────────────────────────────────────────────────────────
-export interface BlogPost {
-  _id: string;
-  title: string;
-  slug: string;
-  category?: string;
-  readTime?: string;
-  excerpt?: string;
-  coverImageUrl?: string;
-  author?: string;
-  publishedAt?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  body?: any[];
-}
+// export interface BlogPost {
+//   _id: string;
+//   title: string;
+//   slug: string;
+//   category?: string;
+//   readTime?: string;
+//   excerpt?: string;
+//   coverImageUrl?: string;
+//   author?: string;
+//   publishedAt?: string;
+//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//   body?: any[];
+// }
 
 // ── Site Settings ─────────────────────────────────────────────────────────────
 export interface SocialLinks {
@@ -255,6 +255,6 @@ export interface LandingPageData {
   testimonials: TestimonialsData | null;
   pricing: PricingData | null;
   faq: FaqData | null;
-  blogPosts: BlogPost[];
+  // blogPosts: BlogPost[];
   siteSettings: SiteSettings | null;
 }

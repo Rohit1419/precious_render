@@ -51,7 +51,7 @@ export default defineConfig({
             S.divider(),
             // Multi-document types
             S.documentTypeListItem('portfolioProject').title('Portfolio Projects'),
-            S.documentTypeListItem('blogPost').title('Blog Posts'),
+            // S.documentTypeListItem('blogPost').title('Blog Posts'),
           ]),
     }),
     visionTool(),
