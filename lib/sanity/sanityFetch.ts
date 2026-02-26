@@ -15,40 +15,42 @@ import {
   siteSettingsQuery,
 } from './queries';
 
-const REVALIDATE_TIME = 60; // 60 seconds ISR
-
 export async function getHeroData() {
   try {
-    return await client.fetch(heroQuery, {}, { next: { revalidate: REVALIDATE_TIME } });
+    const result = await client.fetch(heroQuery);
+    return result ?? null;
   } catch (error) {
-    console.error('Error fetching hero data:', error);
+    console.error('[Sanity] Error fetching hero data:', error);
     return null;
   }
 }
 
 export async function getFeaturesData() {
   try {
-    return await client.fetch(featuresQuery, {}, { next: { revalidate: REVALIDATE_TIME } });
+    const result = await client.fetch(featuresQuery);
+    return result ?? null;
   } catch (error) {
-    console.error('Error fetching features data:', error);
+    console.error('[Sanity] Error fetching features data:', error);
     return null;
   }
 }
 
 export async function getProblemSolutionData() {
   try {
-    return await client.fetch(problemSolutionQuery, {}, { next: { revalidate: REVALIDATE_TIME } });
+    const result = await client.fetch(problemSolutionQuery);
+    return result ?? null;
   } catch (error) {
-    console.error('Error fetching problem-solution data:', error);
+    console.error('[Sanity] Error fetching problem-solution data:', error);
     return null;
   }
 }
 
 export async function getServicesData() {
   try {
-    return await client.fetch(servicesQuery, {}, { next: { revalidate: REVALIDATE_TIME } });
+    const result = await client.fetch(servicesQuery);
+    return result ?? null;
   } catch (error) {
-    console.error('Error fetching services data:', error);
+    console.error('[Sanity] Error fetching services data:', error);
     return null;
   }
 }
@@ -56,75 +58,82 @@ export async function getServicesData() {
 export async function getPortfolioData() {
   try {
     const [portfolioConfig, portfolioProjects] = await Promise.all([
-      client.fetch(portfolioConfigQuery, {}, { next: { revalidate: REVALIDATE_TIME } }),
-      client.fetch(portfolioProjectsQuery, {}, { next: { revalidate: REVALIDATE_TIME } }),
+      client.fetch(portfolioConfigQuery),
+      client.fetch(portfolioProjectsQuery),
     ]);
-    return { portfolioConfig, portfolioProjects: portfolioProjects ?? [] };
+    return { portfolioConfig: portfolioConfig ?? null, portfolioProjects: portfolioProjects ?? [] };
   } catch (error) {
-    console.error('Error fetching portfolio data:', error);
+    console.error('[Sanity] Error fetching portfolio data:', error);
     return { portfolioConfig: null, portfolioProjects: [] };
   }
 }
 
 export async function getProcessData() {
   try {
-    return await client.fetch(processQuery, {}, { next: { revalidate: REVALIDATE_TIME } });
+    const result = await client.fetch(processQuery);
+    return result ?? null;
   } catch (error) {
-    console.error('Error fetching process data:', error);
+    console.error('[Sanity] Error fetching process data:', error);
     return null;
   }
 }
 
 export async function getTestimonialsData() {
   try {
-    return await client.fetch(testimonialsQuery, {}, { next: { revalidate: REVALIDATE_TIME } });
+    const result = await client.fetch(testimonialsQuery);
+    return result ?? null;
   } catch (error) {
-    console.error('Error fetching testimonials data:', error);
+    console.error('[Sanity] Error fetching testimonials data:', error);
     return null;
   }
 }
 
 export async function getPricingData() {
   try {
-    return await client.fetch(pricingQuery, {}, { next: { revalidate: REVALIDATE_TIME } });
+    const result = await client.fetch(pricingQuery);
+    return result ?? null;
   } catch (error) {
-    console.error('Error fetching pricing data:', error);
+    console.error('[Sanity] Error fetching pricing data:', error);
     return null;
   }
 }
 
 export async function getFaqData() {
   try {
-    return await client.fetch(faqQuery, {}, { next: { revalidate: REVALIDATE_TIME } });
+    const result = await client.fetch(faqQuery);
+    return result ?? null;
   } catch (error) {
-    console.error('Error fetching FAQ data:', error);
+    console.error('[Sanity] Error fetching FAQ data:', error);
     return null;
   }
 }
 
 export async function getBlogPosts() {
   try {
-    return await client.fetch(blogPostsQuery, {}, { next: { revalidate: REVALIDATE_TIME } });
+    const result = await client.fetch(blogPostsQuery);
+    return result ?? [];
   } catch (error) {
-    console.error('Error fetching blog posts:', error);
+    console.error('[Sanity] Error fetching blog posts:', error);
     return [];
   }
 }
 
 export async function getBlogPostBySlug(slug: string) {
   try {
-    return await client.fetch(blogPostBySlugQuery, { slug }, { next: { revalidate: REVALIDATE_TIME } });
+    const result = await client.fetch(blogPostBySlugQuery, { slug });
+    return result ?? null;
   } catch (error) {
-    console.error('Error fetching blog post by slug:', error);
+    console.error('[Sanity] Error fetching blog post by slug:', error);
     return null;
   }
 }
 
 export async function getSiteSettings() {
   try {
-    return await client.fetch(siteSettingsQuery, {}, { next: { revalidate: REVALIDATE_TIME } });
+    const result = await client.fetch(siteSettingsQuery);
+    return result ?? null;
   } catch (error) {
-    console.error('Error fetching site settings:', error);
+    console.error('[Sanity] Error fetching site settings:', error);
     return null;
   }
 }
