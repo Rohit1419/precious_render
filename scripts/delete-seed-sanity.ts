@@ -1,12 +1,13 @@
 /**
- * Sanity Delete-Seed Script
- * Removes all documents created by seed-sanity.ts, including their drafts.
+ * Sanity Clear-Seed Script
+ * Clears all fields from documents created by seed-sanity.ts, without deleting
+ * the documents themselves. Drafts are also cleared if they exist.
  *
  * Prerequisites:
  *   1. Set NEXT_PUBLIC_SANITY_PROJECT_ID and SANITY_API_WRITE_TOKEN in .env.local
  *   2. Run: bun scripts/delete-seed-sanity.ts
  *
- * This script is idempotent — safe to run even if documents are already deleted.
+ * This script is idempotent — safe to run even if fields are already empty.
  */
 
 // Bun automatically loads .env.local — no dotenv needed.
@@ -27,40 +28,50 @@ if (!token || token === "your_write_token_here") {
 
 const client = createClient({ projectId, dataset, token, apiVersion: "2024-01-01", useCdn: false });
 
+/** Sanity internal fields that must never be unset. */
+const INTERNAL_FIELDS = new Set(["_id", "_type", "_rev", "_createdAt", "_updatedAt"]);
+
 /**
- * Delete the published document AND its draft, ignoring 404s.
+ * Clear all custom fields from a document (published + draft) without deleting it.
  */
-async function deleteDoc(id: string) {
-  await client.delete(id).catch(() => null);
-  await client.delete(`drafts.${id}`).catch(() => null);
+async function clearDoc(id: string) {
+  for (const docId of [id, `drafts.${id}`]) {
+    const doc = await client.getDocument(docId).catch(() => null);
+    if (!doc) continue;
+
+    const fieldsToUnset = Object.keys(doc).filter((key) => !INTERNAL_FIELDS.has(key));
+    if (fieldsToUnset.length === 0) continue;
+
+    await client.patch(docId).unset(fieldsToUnset).commit();
+  }
   console.log(`  ✓ ${id}`);
 }
 
-async function deleteAll() {
-  console.log("🗑️   Starting Sanity seed deletion...");
+async function clearAll() {
+  console.log("🧹  Starting Sanity seed field clearing...");
   console.log(`   Project: ${projectId}  |  Dataset: ${dataset}`);
 
   // ─── Singletons ──────────────────────────────────────────────────────────
-  await deleteDoc("siteSettings");
-  await deleteDoc("hero");
-  await deleteDoc("features");
-  await deleteDoc("problemSolution");
-  await deleteDoc("services");
-  await deleteDoc("portfolioConfig");
-  await deleteDoc("process");
-  await deleteDoc("testimonials");
-  await deleteDoc("pricing");
-  await deleteDoc("faq");
+  await clearDoc("siteSettings");
+  await clearDoc("hero");
+  await clearDoc("features");
+  await clearDoc("problemSolution");
+  await clearDoc("services");
+  await clearDoc("portfolioConfig");
+  await clearDoc("process");
+  await clearDoc("testimonials");
+  await clearDoc("pricing");
+  await clearDoc("faq");
 
   // ─── Sample blog posts ───────────────────────────────────────────────────
-  await deleteDoc("blog-1");
-  await deleteDoc("blog-2");
-  await deleteDoc("blog-3");
+  await clearDoc("blog-1");
+  await clearDoc("blog-2");
+  await clearDoc("blog-3");
 
-  console.log("\n✅  All seeded documents deleted! Open http://localhost:3000/studio to verify.");
+  console.log("\n✅  All seeded fields cleared! Documents still exist. Open http://localhost:3000/studio to verify.");
 }
 
-deleteAll().catch((err) => {
-  console.error("❌  Delete failed:", err.message);
+clearAll().catch((err) => {
+  console.error("❌  Clear failed:", err.message);
   process.exit(1);
 });
