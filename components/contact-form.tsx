@@ -32,20 +32,64 @@ export default function ContactForm({ data }: ContactFormProps) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormState("submitting");
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setFormState("submitting");
 
-    // Simulate form submission
-    setTimeout(() => {
+  // Client-side validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+  if (!formData.name.trim()) {
+    alert('Please enter your name');
+    setFormState("idle");
+    return;
+  }
+
+  if (!formData.email.trim()) {
+    alert('Please enter your email');
+    setFormState("idle");
+    return;
+  }
+
+  if (!emailRegex.test(formData.email)) {
+    alert('Please enter a valid email address');
+    setFormState("idle");
+    return;
+  }
+
+  if (!formData.message.trim()) {
+    alert('Please enter a message');
+    setFormState("idle");
+    return;
+  }
+
+  try {
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
       setFormState("success");
       confettiRef.current?.fire({
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },
       });
-    }, 1500);
-  };
+    } else {
+      setFormState("error");
+      console.error('Error:', result.error);
+    }
+  } catch (error) {
+    setFormState("error");
+    console.error('Error submitting form:', error);
+  }
+};
 
   const resetForm = () => {
     setFormState("idle");
@@ -94,24 +138,44 @@ export default function ContactForm({ data }: ContactFormProps) {
             transition={{ duration: 0.6 }}
             className="bg-white dark:bg-neutral-800 rounded-xl shadow-lg p-6 md:p-8"
           >
-            {formState === "success" ? (
-              <div className="text-center py-12">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 mb-6">
-                  <CheckCircle size={32} />
+              {formState === "success" ? (
+                <div className="text-center py-12">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 mb-6">
+                    <CheckCircle size={32} />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-2">Message Sent!</h3>
+                  <p className="text-neutral-600 dark:text-neutral-400 mb-8">
+                    Thank you for reaching out. We&apos;ll get back to you as soon
+                    as possible.
+                  </p>
+                  <button
+                    onClick={resetForm}
+                    className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-md font-medium transition-colors"
+                  >
+                    Send Another Message
+                  </button>
                 </div>
-                <h3 className="text-2xl font-bold mb-2">Message Sent!</h3>
-                <p className="text-neutral-600 dark:text-neutral-400 mb-8">
-                  Thank you for reaching out. We&apos;ll get back to you as soon
-                  as possible.
-                </p>
-                <button
-                  onClick={resetForm}
-                  className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-md font-medium transition-colors"
-                >
-                  Send Another Message
-                </button>
-              </div>
-            ) : (
+              ) : formState === "error" ? (
+                <div className="text-center py-12">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 mb-6">
+                    <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold mb-2 text-neutral-900 dark:text-white">
+                    Oops! Something went wrong
+                  </h3>
+                  <p className="text-neutral-600 dark:text-neutral-400 mb-8">
+                    Please try again or contact us directly at {email}
+                  </p>
+                  <button
+                    onClick={resetForm}
+                    className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-md font-medium transition-colors"
+                  >
+                    Try Again
+                  </button>
+                </div>
+              ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
@@ -147,10 +211,12 @@ export default function ContactForm({ data }: ContactFormProps) {
                       value={formData.email}
                       onChange={handleChange}
                       required
+                      pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
+                      title="Please enter a valid email address"
                       className="w-full px-4 py-3 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400"
                       placeholder="your.email@example.com"
                       disabled={formState === "submitting"}
-                    />
+                     />
                   </div>
                 </div>
 
