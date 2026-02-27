@@ -36,7 +36,7 @@ export default function Header({ data }: HeaderProps) {
 
   const menuItems = data?.navItems?.length ? data.navItems : DEFAULT_MENU_ITEMS;
   const darkLogo = data?.darkLogoUrl ?? "/darkLogo.png";
-  const logoSrc = data?.logoUrl ?? "/brightLogo.png";
+  const logoSrc = data?.logoUrl ?? "/brightLogo.jpg";
 
   const currentLogo = mounted && theme === "dark" ? darkLogo : logoSrc;
 
@@ -49,17 +49,17 @@ export default function Header({ data }: HeaderProps) {
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link href="/" className="flex items-center">
-              <div className="relative h-10 md:h-14 w-[180px] md:w-[280px]">
+              {/* <div className="relative h-10 md:h-14 w-[180px] md:w-[280px]"> */}
               <Image
                 key={theme}
                 src={currentLogo}
                 alt={`${siteName} Logo`}
-                fill
-                className="object-contain object-left transition-opacity duration-300"
+                className="object-fill object-left  transition-opacity duration-300"
                 priority
-                sizes="(max-width: 768px) 180px, 280px"
+                width={120}
+                height={60}
               />
-            </div>
+            
           </Link>
 
           {/* Desktop Navigation */}
