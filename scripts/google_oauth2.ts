@@ -26,16 +26,19 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-rl.question('📋 Paste the code from that page here: ', (code) => {
+rl.question('📋 Paste the code from that page here: ', (code: string) => {
   rl.close();
-  oauth2Client.getToken(code, (err, token) => {
-    if (err) {
-      console.error('❌ Error retrieving access token', err);
-      return;
+  oauth2Client.getToken(
+    code,
+    (err: Error | null, token: { refresh_token?: string } | null) => {
+      if (err) {
+        console.error('❌ Error retrieving access token', err);
+        return;
+      }
+      console.log('\nSuccess! Your tokens:\n');
+      console.log('GMAIL_REFRESH_TOKEN=' + token?.refresh_token);
+      console.log('\n📝 Copy the above line to your .env.local file\n');
     }
-    console.log('\n✅ Success! Your tokens:\n');
-    console.log('GMAIL_REFRESH_TOKEN=' + token.refresh_token);
-    console.log('\n📝 Copy the above line to your .env.local file\n');
-  });
+  );
 });
 

@@ -8,6 +8,7 @@ import Image from "next/image";
 import { CompareSlider } from "@/components/ui/compare-slider";
 import { TextAnimate } from "@/components/ui/text-animate";
 import type { ProblemSolutionData } from "@/lib/sanity/types";
+import { CTAButton } from "./CTAButon";
 
 interface ProblemSolutionProps {
   data?: ProblemSolutionData | null;
@@ -182,10 +183,16 @@ export default function ProblemSolution({ data }: ProblemSolutionProps) {
                   className="h-full w-full"
                 />
               </div>
-              <a href={solutionCtaHref} className="inline-flex items-center px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold transition-colors shadow-lg shadow-emerald-500/20">
+              {/* <a href={solutionCtaHref} className="inline-flex items-center px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold transition-colors shadow-lg shadow-emerald-500/20">
                 {solutionCtaLabel}
                 <ArrowRight className="ml-2 w-5 h-5" />
-              </a>
+              </a> */}
+              <div className="text-center max-w-3xl mx-auto">
+
+                <CTAButton href={closingCtaHref}>
+                  {closingCtaLabel}
+                </CTAButton>
+              </div>
             </div>
           </div>
         </div>

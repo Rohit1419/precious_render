@@ -11,6 +11,7 @@ import { useRef, useState } from "react";
 import { MagicCard } from "@/components/ui/magic-card";
 import { ShineBorder } from "@/components/ui/shine-border";
 import type { FeaturesData } from "@/lib/sanity/types";
+import { CTAButton } from "./CTAButon";
 
 interface FeaturesProps {
   data?: FeaturesData | null;
@@ -128,16 +129,15 @@ export default function Features({ data }: FeaturesProps) {
           })}
         </div>
 
-        <div className="mt-16 text-center">
-          <motion.a
-            href={ctaHref}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 bg-gradient-to-r from-emerald-500 to-cyan-500 text-white rounded-xl font-medium hover:from-emerald-600 hover:to-cyan-600 transition-all shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40"
-          >
+       
+{/* CTA button section */}
+        <div className="text-center mt-10 max-w-3xl mx-auto">
+
+          <CTAButton href={ctaHref}>
             {ctaLabel}
-          </motion.a>
+          </CTAButton>
         </div>
+        
       </div>
     </section>
   );
