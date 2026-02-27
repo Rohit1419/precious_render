@@ -11,6 +11,7 @@ const oauth2Client = new OAuth2(client_id, client_secret, redirect_uris[0]);
 
 const scopes = ['https://www.googleapis.com/auth/gmail.send'];
 
+
 const authUrl = oauth2Client.generateAuthUrl({
   access_type: 'offline',
   scope: scopes,
