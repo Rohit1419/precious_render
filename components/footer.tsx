@@ -22,7 +22,6 @@ const DEFAULT_FOOTER_LINKS = [
   {
     title: "Company",
     links: [
-      { name: "About Us", href: "#about" },
       { name: "Portfolio", href: "#portfolio" },
       { name: "Process", href: "#process" },
       { name: "Testimonials", href: "#testimonials" },
@@ -31,7 +30,6 @@ const DEFAULT_FOOTER_LINKS = [
   {
     title: "Resources",
     links: [
-      { name: "Blog", href: "/blog" },
       { name: "Pricing", href: "#pricing" },
       { name: "FAQ", href: "#faq" },
       { name: "Contact", href: "#contact" },
