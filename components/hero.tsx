@@ -7,6 +7,7 @@ import { TextAnimate } from "@/components/ui/text-animate";
 import { AuroraText } from "@/components/ui/aurora-text";
 import { WordRotate } from "@/components/ui/word-rotate";
 import type { HeroData } from "@/lib/sanity/types";
+import { toast, Toaster } from 'sonner';
 
 interface HeroProps {
   data?: HeroData | null;
@@ -52,17 +53,19 @@ const handleSubmit = async (e: React.FormEvent) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   
   if (!email.trim()) {
-    alert('Please enter your email address');
+    toast.error('Please enter your email address');
     return;
   }
 
   if (!emailRegex.test(email)) {
-    alert('Please enter a valid email address');
+    toast.error('Please enter a valid email address');
     return;
   }
 
   try {
-    // Send lead capture email
+    // Show loading toast
+    toast.loading('Sending...');
+
     const response = await fetch('/api/newsletter', {
       method: 'POST',
       headers: {
@@ -71,20 +74,30 @@ const handleSubmit = async (e: React.FormEvent) => {
       body: JSON.stringify({ email }),
     });
 
+    // Dismiss loading
+    toast.dismiss();
+
     if (response.ok) {
       // Clear input
       setEmail("");
       
-      // Show success feedback
-      console.log(' Lead captured successfully!');
-      alert('Thank you! We\'ll be in touch soon.');
+      // Show success toast
+      toast.success('Magic sent! ✨', {
+        description: "We'll be in touch with something special soon.",
+        duration: 3000,
+      });
     } else {
       const result = await response.json();
-      alert(result.error || 'Failed to capture lead. Please try again.');
+      toast.error('Oops!', {
+        description: result.error || 'Something went wrong. Please try again.',
+      });
     }
   } catch (error) {
+    toast.dismiss();
+    toast.error('Connection error', {
+      description: 'Please check your internet and try again.',
+    });
     console.error('Error capturing lead:', error);
-    alert('Something went wrong. Please try again.');
   }
 };
 
@@ -204,6 +217,24 @@ const handleSubmit = async (e: React.FormEvent) => {
           </motion.form>
         </div>
       </motion.div>
+        <Toaster 
+          position="bottom-center"
+          toastOptions={{
+            style: {
+              background: '#ffffff',
+              color: '#1a1a1a',
+              border: '1px solid #e5e7eb',
+            },
+            classNames: {
+              toast: 'dark:!bg-neutral-900 dark:!text-white dark:!border-neutral-700',
+              title: 'dark:!text-white',
+              description: 'dark:!text-neutral-400',
+              actionButton: 'dark:!bg-emerald-500',
+              cancelButton: 'dark:!bg-neutral-800',
+            },
+          }}
+          richColors
+        />
     </div>
   );
 }
