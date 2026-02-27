@@ -1,5 +1,8 @@
 import { google } from 'googleapis';
 import { NextResponse } from 'next/server';
+import isEmail from 'isemail';
+import disposableDomains from 'disposable-email-domains';
+import dns from 'dns/promises';
 
 const OAuth2 = google.auth.OAuth2;
 
@@ -24,6 +27,32 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    // 1. Block disposable emails
+      const domain = email.split('@')[1];
+      if (disposableDomains.includes(domain)) {
+        return NextResponse.json(
+          { error: 'Disposable email addresses are not allowed.' },
+          { status: 400 }
+        );
+      }
+
+      // 2. Check MX records (domain can receive email)
+      try {
+        const mxRecords = await dns.resolveMx(domain);
+        if (!mxRecords || mxRecords.length === 0) {
+          return NextResponse.json(
+            { error: 'Email domain is not configured to receive emails.' },
+            { status: 400 }
+          );
+        }
+      } catch {
+        return NextResponse.json(
+          { error: 'Invalid email domain.' },
+          { status: 400 }
+        );
+      }
+
 
     // Create OAuth2 client
     const oauth2Client = new OAuth2(
@@ -119,7 +148,7 @@ export async function POST(request: Request) {
             border-top: 1px solid #e0e0e0;
             color: #999; 
             font-size: 12px;
-            
+
           }
           .divider {
             height: 1px;
