@@ -45,15 +45,48 @@ export default function Hero({ data }: HeroProps) {
   const primaryCtaHref = data?.primaryCtaHref ?? "https://wa.me/7823846641?text=Hello%20I%20want%20to%20know%20more%20about%20your%20services";
   const videoSrc = data?.backgroundVideoUrl ?? "/Precious render.mp4";
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email) {
-      // Open WhatsApp with the email in the message
-      const message = encodeURIComponent(`Hello! I'm interested in your services. My email is: ${email}`);
-      window.open(`${primaryCtaHref.split('?')[0]}?text=${message}`, '_blank');
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  
+  // Email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+  if (!email.trim()) {
+    alert('Please enter your email address');
+    return;
+  }
+
+  if (!emailRegex.test(email)) {
+    alert('Please enter a valid email address');
+    return;
+  }
+
+  try {
+    // Send lead capture email
+    const response = await fetch('/api/newsletter', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    if (response.ok) {
+      // Clear input
       setEmail("");
+      
+      // Show success feedback
+      console.log(' Lead captured successfully!');
+      alert('Thank you! We\'ll be in touch soon.');
+    } else {
+      const result = await response.json();
+      alert(result.error || 'Failed to capture lead. Please try again.');
     }
-  };
+  } catch (error) {
+    console.error('Error capturing lead:', error);
+    alert('Something went wrong. Please try again.');
+  }
+};
 
   return (
     <div
@@ -135,13 +168,15 @@ export default function Hero({ data }: HeroProps) {
 
               {/* Input */}
               <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email here and we'll send you some 'magic'..."
-                required
-                className="flex-1 bg-transparent pl-10 md:pl-16 pr-2 md:pr-4 py-4 md:py-5 text-sm md:text-base text-neutral-900 dark:text-white placeholder:text-neutral-500 dark:placeholder:text-neutral-400 focus:outline-none md:placeholder:inline placeholder:hidden"
-              />
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email here and we'll send you some 'magic'..."
+                  required
+                  pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
+                  title="Please enter a valid email address"
+                  className="flex-1 bg-transparent pl-10 md:pl-16 pr-2 md:pr-4 py-4 md:py-5 text-sm md:text-base text-neutral-900 dark:text-white placeholder:text-neutral-500 dark:placeholder:text-neutral-400 focus:outline-none md:placeholder:inline placeholder:hidden"
+                />
 
               
               
