@@ -4,6 +4,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { Linkedin, Mail, Phone, MapPin, Instagram, Youtube, MessageCircle } from "lucide-react";
 import type { SiteSettings } from "@/lib/sanity/types";
+import { useTheme } from "next-themes";
+import { useEffect} from "react";
+import { useState } from "react";
 
 interface FooterProps {
   data?: SiteSettings | null;
@@ -39,8 +42,20 @@ const DEFAULT_FOOTER_LINKS = [
 
 export default function Footer({ data }: FooterProps) {
   const currentYear = new Date().getFullYear();
+  const {theme} = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-  const logoSrc = data?.logoUrl ?? "/Precious Render.png";
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+
+
+  const brightLogo = data?.logoUrl ?? "/brightLogo.png";
+  const darkLogo = data?.darkLogoUrl ?? "/darkLogo.png";
+
+  const currentLogo = mounted && theme === "dark" ? darkLogo : brightLogo;
+
   const siteName = data?.siteName ?? "Precious Render";
   const tagline = data?.tagline ?? "Specializing in photorealistic jewelry renders, CAD-to-catalog workflows, and on-demand jewelry manufacturing support for brands worldwide";
 
@@ -65,16 +80,17 @@ export default function Footer({ data }: FooterProps) {
           {/* Company Info */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center">
-              <div className="relative">
+              
                 <Image
-                  src={logoSrc}
-                  alt={`${siteName} Logo`}
-                  width={320}
-                  height={120}
-                  className="h-16 w-auto object-contain"
-                  priority
+                  key={theme}
+                src={currentLogo}
+                alt={`${siteName} Logo`}
+                className="object-fill object-left  transition-opacity duration-300"
+                priority
+                width={120}
+                height={60}
                 />
-              </div>
+              
             </Link>
             <p className="mt-4 text-neutral-600 dark:text-neutral-400 max-w-md">
               {tagline}
