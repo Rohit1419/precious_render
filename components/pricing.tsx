@@ -16,7 +16,7 @@ const DEFAULT_PLANS: PricingPlan[] = [
     highlighted: false,
     features: ["3 x 360° turntable videos", "12 x high‑res JPG renders", "12 x high‑res PNG renders", "Clean studio lighting", "Photoreal metals & gems", "1 revision", "2-3 week delivery"],
     ctaLabel: "Get Started",
-    ctaHref: "https://wa.me/+918087881239??text=Hello%20I%20want%20to%20know%20more%20about%20the%20Essential%20Product%20Catalogue%20plan",
+    ctaHref: "https://wa.me/+918087881239?text=Hello%20I%20want%20to%20know%20more%20about%20the%20Essential%20Product%20Catalogue%20plan",
   },
   {
     name: "Complete E-Commerce Powerhouse",
@@ -25,7 +25,7 @@ const DEFAULT_PLANS: PricingPlan[] = [
     highlighted: true,
     features: ["CAD designing included", "3 x 360° turntable videos", "12 x high‑res JPG renders", "12 x high‑res PNG renders", "1 high-res on‑body image", "2 measurement images", "Premium studio lighting", "Ultra-realistic materials", "5–7 day delivery", "Unlimited revisions"],
     ctaLabel: "Get Started",
-    ctaHref: "https://wa.me/+918087881239??text=Hello%20I%20want%20to%20know%20more%20about%20the%20Complete%20E-Commerce%20Powerhouse%20plan",
+    ctaHref: "https://wa.me/+918087881239?text=Hello%20I%20want%20to%20know%20more%20about%20the%20Complete%20E-Commerce%20Powerhouse%20plan",
   },
   {
     name: "Cinematic Brand Storytelling",
@@ -34,7 +34,7 @@ const DEFAULT_PLANS: PricingPlan[] = [
     highlighted: false,
     features: ["30–60 sec cinematic video", "Custom storyline + Art direction", "Multiple cinematic & macro shots", "Cinematic lighting setup", "Ultra-realistic materials with FX", "Optional On-body visuals add-on", "7–10 day delivery", "Unlimited revisions"],
     ctaLabel: "Get Started",
-    ctaHref: "https://wa.me/+918087881239??text=Hello%20I%20want%20to%20know%20more%20about%20the%20Cinematic%20Brand%20Storytelling%20plan",
+    ctaHref: "https://wa.me/+918087881239?text=Hello%20I%20want%20to%20know%20more%20about%20the%20Cinematic%20Brand%20Storytelling%20plan",
   },
 ];
 
