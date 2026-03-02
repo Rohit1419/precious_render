@@ -5,7 +5,10 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, X, Play } from "lucide-react";
 import { CompareSlider } from "@/components/ui/compare-slider";
-import type { PortfolioConfig, PortfolioProject as CmsPortfolioProject } from "@/lib/sanity/types";
+import type {
+  PortfolioConfig,
+  PortfolioProject as CmsPortfolioProject,
+} from "@/lib/sanity/types";
 
 interface PortfolioData {
   config?: PortfolioConfig | null;
@@ -32,27 +35,31 @@ interface Project {
 }
 
 const DEFAULT_CATEGORIES = [
-    {
-      id: "still",
-      label: " Classic Still",
-      description: "Clean, high-quality product shots focused on clarity, detail, and perfect lighting for e-commerce.",
-    },
-    {
-      id: "classic",
-      label: "Creative Stills",
-      description: "Elegant 360-degree rotations and simple movements to showcase the full geometry of your designs.",
-    },
-    {
-      id: "creative",
-      label: "Classic Animations",
-      description: "Dynamic motion graphics and cinematic storytelling to elevate your brand marketing.",
-    },
-    {
-      id: "onbody",
-      label: "Creatiive Animations",
-      description: "Realistic visualizations of jewelry worn on models to help customers visualize scale and style.",
-    },
-  ];
+  {
+    id: "still",
+    label: " Classic Still",
+    description:
+      "Clean, high-quality product shots focused on clarity, detail, and perfect lighting for e-commerce.",
+  },
+  {
+    id: "classic",
+    label: "Creative Stills",
+    description:
+      "Elegant 360-degree rotations and simple movements to showcase the full geometry of your designs.",
+  },
+  {
+    id: "creative",
+    label: "Classic Animations",
+    description:
+      "Dynamic motion graphics and cinematic storytelling to elevate your brand marketing.",
+  },
+  {
+    id: "onbody",
+    label: "Creatiive Animations",
+    description:
+      "Realistic visualizations of jewelry worn on models to help customers visualize scale and style.",
+  },
+];
 
 export default function Portfolio({ data }: PortfolioProps) {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -64,54 +71,239 @@ export default function Portfolio({ data }: PortfolioProps) {
 
   // Helper to generate projects
   const generateProjects = () => {
+    // const stillImages = [
+    //   { src: "/Still Images/Bright Background/01-Robert-Procop-Ring-White-2-Big.jpg", title: "Robert Procop Ring" },
+    //   { src: "/Still Images/Bright Background/0585-Pics_00000.jpg", title: "Diamond Solitaire" },
+    //   { src: "/Still Images/Bright Background/36-Pics-PL_00005-Large.jpg", title: "Platinum Band" },
+    //   { src: "/Still Images/Bright Background/573-liori_00001.jpg", title: "Liori Diamond Ring" },
+    //   { src: "/Still Images/Bright Background/Autumn-Earrings-01-big.jpg", title: "Autumn Earrings" },
+    //   { src: "/Still Images/Bright Background/Nehadani-Color_00000-big.jpg", title: "Nehadani Color Collection" },
+    //   { src: "/Still Images/Bright Background/bracelet_00012-big.jpg", title: "Diamond Tennis Bracelet" },
+    //   { src: "/Still Images/Dark Background/01-Ring-De-Grisogono-1-big.jpg", title: "De Grisogono Ring" },
+    //   { src: "/Still Images/Dark Background/Bluestone-Ring-BISD0327R02.jpg", title: "Bluestone Ring" },
+    //   { src: "/Still Images/Dark Background/Braslet.jpg", title: "Luxury Bracelet" },
+    //   { src: "/Still Images/Dark Background/Cartier-PARIS-NOUVELLE-VAGUE-BRACELET.jpg", title: "Cartier Paris Bracelet" },
+    //   { src: "/Still Images/Dark Background/Graff-Necklace.jpg", title: "Graff Necklace" },
+    //   { src: "/Still Images/Dark Background/Jewelett-Black-Big-.jpg", title: "Jewelett Black Edition" },
+    //   { src: "/Still Images/Dark Background/Winter-Leaves-Necklace.jpg", title: "Winter Leaves Necklace" },
+    //   { src: "/Still Images/Bright Background/01-Robert-Procop-Ring-White-4-Big.jpg", title: "Robert Procop Ring II" },
+    //   { src: "/Still Images/Bright Background/0585-Pics_00005.jpg", title: "Diamond Solitaire II" },
+    //   { src: "/Still Images/Bright Background/06-R060416__00006.jpg", title: "Elegant Diamond Ring" },
+    //   { src: "/Still Images/Bright Background/36-Pics-PL_00006-Large.jpg", title: "Platinum Band II" },
+    //   { src: "/Still Images/Bright Background/573-liori_00004.jpg", title: "Liori Diamond Ring II" },
+    //   { src: "/Still Images/Bright Background/Autumn-Earrings-02-big.jpg", title: "Autumn Earrings II" },
+    //   { src: "/Still Images/Bright Background/BIDG0555R19_web.jpg", title: "Gold Ring Design" },
+    //   { src: "/Still Images/Bright Background/Nehadani-Color_00001-big.jpg", title: "Nehadani Color II" },
+    //   { src: "/Still Images/Bright Background/bracelet_00013-big.jpg", title: "Diamond Tennis Bracelet II" },
+    //   { src: "/Still Images/Dark Background/01-Ring-De-Grisogono-2-big.jpg", title: "De Grisogono Ring II" },
+    // ];
+
+    // In the generateProjects() function, replace the stillImages array:
+
     const stillImages = [
-      { src: "/Still Images/Bright Background/01-Robert-Procop-Ring-White-2-Big.jpg", title: "Robert Procop Ring" },
-      { src: "/Still Images/Bright Background/0585-Pics_00000.jpg", title: "Diamond Solitaire" },
-      { src: "/Still Images/Bright Background/36-Pics-PL_00005-Large.jpg", title: "Platinum Band" },
-      { src: "/Still Images/Bright Background/573-liori_00001.jpg", title: "Liori Diamond Ring" },
-      { src: "/Still Images/Bright Background/Autumn-Earrings-01-big.jpg", title: "Autumn Earrings" },
-      { src: "/Still Images/Bright Background/Nehadani-Color_00000-big.jpg", title: "Nehadani Color Collection" },
-      { src: "/Still Images/Bright Background/bracelet_00012-big.jpg", title: "Diamond Tennis Bracelet" },
-      { src: "/Still Images/Dark Background/01-Ring-De-Grisogono-1-big.jpg", title: "De Grisogono Ring" },
-      { src: "/Still Images/Dark Background/Bluestone-Ring-BISD0327R02.jpg", title: "Bluestone Ring" },
-      { src: "/Still Images/Dark Background/Braslet.jpg", title: "Luxury Bracelet" },
-      { src: "/Still Images/Dark Background/Cartier-PARIS-NOUVELLE-VAGUE-BRACELET.jpg", title: "Cartier Paris Bracelet" },
-      { src: "/Still Images/Dark Background/Graff-Necklace.jpg", title: "Graff Necklace" },
-      { src: "/Still Images/Dark Background/Jewelett-Black-Big-.jpg", title: "Jewelett Black Edition" },
-      { src: "/Still Images/Dark Background/Winter-Leaves-Necklace.jpg", title: "Winter Leaves Necklace" },
-      { src: "/Still Images/Bright Background/01-Robert-Procop-Ring-White-4-Big.jpg", title: "Robert Procop Ring II" },
-      { src: "/Still Images/Bright Background/0585-Pics_00005.jpg", title: "Diamond Solitaire II" },
-      { src: "/Still Images/Bright Background/06-R060416__00006.jpg", title: "Elegant Diamond Ring" },
-      { src: "/Still Images/Bright Background/36-Pics-PL_00006-Large.jpg", title: "Platinum Band II" },
-      { src: "/Still Images/Bright Background/573-liori_00004.jpg", title: "Liori Diamond Ring II" },
-      { src: "/Still Images/Bright Background/Autumn-Earrings-02-big.jpg", title: "Autumn Earrings II" },
-      { src: "/Still Images/Bright Background/BIDG0555R19_web.jpg", title: "Gold Ring Design" },
-      { src: "/Still Images/Bright Background/Nehadani-Color_00001-big.jpg", title: "Nehadani Color II" },
-      { src: "/Still Images/Bright Background/bracelet_00013-big.jpg", title: "Diamond Tennis Bracelet II" },
-      { src: "/Still Images/Dark Background/01-Ring-De-Grisogono-2-big.jpg", title: "De Grisogono Ring II" },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Dancing Earrings 1.jpg",
+        title: "Dancing Earrings 1",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Dancing Earrings 2.jpg",
+        title: "Dancing Earrings 2",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Pearoval 1.jpg",
+        title: "Pearoval 1",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Princes Halo 1.jpg",
+        title: "Princes Halo 1",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Princes Halo 2.jpg",
+        title: "Princes Halo 2",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Princes Halo 3.jpg",
+        title: "Princes Halo 3",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Remix 1.jpg",
+        title: "Remix 1",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 1-1.jpg",
+        title: "Ring 1-1",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 1-2.jpg",
+        title: "Ring 1-2",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 1-3.jpg",
+        title: "Ring 1-3",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 3-1.jpg",
+        title: "Ring 3-1",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 3-2.jpg",
+        title: "Ring 3-2",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 3-3.jpg",
+        title: "Ring 3-3",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 4-1.jpg",
+        title: "Ring 4-1",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 4-2.jpg",
+        title: "Ring 4-2",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 4-3.jpg",
+        title: "Ring 4-3",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 5-1.jpg",
+        title: "Ring 5-1",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 5-2.jpg",
+        title: "Ring 5-2",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 5-3.jpg",
+        title: "Ring 5-3",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 5-4.jpg",
+        title: "Ring 5-4",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 10-1.jpg",
+        title: "Ring 10-1",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 10-2.jpg",
+        title: "Ring 10-2",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 10-3.jpg",
+        title: "Ring 10-3",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 10-4.jpg",
+        title: "Ring 10-4",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 10-5.jpg",
+        title: "Ring 10-5",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 10-6.jpg",
+        title: "Ring 10-6",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 12-1.jpg",
+        title: "Ring 12-1",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 12-2.jpg",
+        title: "Ring 12-2",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 12-3.jpg",
+        title: "Ring 12-3",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 12-4.jpg",
+        title: "Ring 12-4",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 12-5.jpg",
+        title: "Ring 12-5",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 14-1.jpg",
+        title: "Ring 14-1",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 14-2.jpg",
+        title: "Ring 14-2",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 14-3.jpg",
+        title: "Ring 14-3",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 14-4.jpg",
+        title: "Ring 14-4",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 16-1.jpg",
+        title: "Ring 16-1",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 16-2.jpg",
+        title: "Ring 16-2",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 16-3.jpg",
+        title: "Ring 16-3",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 16-4.jpg",
+        title: "Ring 16-4",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 17-1.jpg",
+        title: "Ring 17-1",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 17-2.jpg",
+        title: "Ring 17-2",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Bright Background/Ring 17-3.jpg",
+        title: "Ring 17-3",
+      },
     ];
 
     const onBodyData = [
-      { src: "/Still Images/Bright Background/bracelet_00012-big.jpg", title: "Diamond Tennis Bracelet on Wrist", type: "image" as const },
+      {
+        src: "/Still Images/Bright Background/bracelet_00012-big.jpg",
+        title: "Diamond Tennis Bracelet on Wrist",
+        type: "image" as const,
+      },
       {
         src: "/Still Images/Dark Background/Braslet.jpg",
         title: "Elegant Bracelet Showcase",
         type: "video" as const,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
       },
-      { src: "/Still Images/Bright Background/bracelet_00013-big.jpg", title: "Diamond Tennis Bracelet II", type: "image" as const },
+      {
+        src: "/Still Images/Bright Background/bracelet_00013-big.jpg",
+        title: "Diamond Tennis Bracelet II",
+        type: "image" as const,
+      },
       {
         src: "/Still Images/Dark Background/Cartier-PARIS-NOUVELLE-VAGUE-BRACELET.jpg",
         title: "Paris Nouvelle Vague On-Body",
         type: "video" as const,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
       },
-      { src: "/Still Images/Bright Background/bracelet_00014-big.jpg", title: "Diamond Tennis Bracelet III", type: "image" as const },
+      {
+        src: "/Still Images/Bright Background/bracelet_00014-big.jpg",
+        title: "Diamond Tennis Bracelet III",
+        type: "image" as const,
+      },
       {
         src: "/Still Images/Bright Background/01-Robert-Procop-Ring-White-2-Big.jpg",
         title: "Ring On Hand Animation",
         type: "video" as const,
-        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
       },
     ];
 
@@ -142,7 +334,8 @@ export default function Portfolio({ data }: PortfolioProps) {
         id: idCounter++,
         title: img.title,
         category: "still",
-        description: "High-resolution photorealistic render showcasing intricate details and material accuracy.",
+        description:
+          "High-resolution photorealistic render showcasing intricate details and material accuracy.",
         image: img.src,
         url: "#",
         technologies: ["3D Rendering", "Ray Tracing", "High Poly"],
@@ -157,14 +350,16 @@ export default function Portfolio({ data }: PortfolioProps) {
         id: idCounter++,
         title: item.title,
         category: "onbody",
-        description: item.type === "video"
-          ? "Cinematic on-body animation showcasing jewelry in motion on models."
-          : "Realistic visualization of jewelry worn on models to help customers visualize scale and style.",
+        description:
+          item.type === "video"
+            ? "Cinematic on-body animation showcasing jewelry in motion on models."
+            : "Realistic visualization of jewelry worn on models to help customers visualize scale and style.",
         image: item.src,
         url: "#",
-        technologies: item.type === "video"
-          ? ["Motion Tracking", "On-Body Compositing", "Video Production"]
-          : ["Compositing", "Model Integration", "Lighting"],
+        technologies:
+          item.type === "video"
+            ? ["Motion Tracking", "On-Body Compositing", "Video Production"]
+            : ["Compositing", "Model Integration", "Lighting"],
         type: item.type,
         videoUrl: item.type === "video" ? item.videoUrl : undefined,
         background: getBackground(item.src),
@@ -177,7 +372,8 @@ export default function Portfolio({ data }: PortfolioProps) {
         id: idCounter++,
         title: `Classic Animation ${i + 1}`,
         category: "classic",
-        description: "Elegant 360-degree rotation showcasing the full geometry of the design.",
+        description:
+          "Elegant 360-degree rotation showcasing the full geometry of the design.",
         image: src,
         url: "#",
         technologies: ["Animation", "360 Video", "Gold Material"],
@@ -193,7 +389,8 @@ export default function Portfolio({ data }: PortfolioProps) {
         id: idCounter++,
         title: `Creative Campaign ${i + 1}`,
         category: "creative",
-        description: "Dynamic motion graphics and cinematic storytelling for brand marketing.",
+        description:
+          "Dynamic motion graphics and cinematic storytelling for brand marketing.",
         image: src,
         url: "#",
         technologies: ["Motion Graphics", "Cinematic", "VFX"],
@@ -208,18 +405,21 @@ export default function Portfolio({ data }: PortfolioProps) {
 
   const projects = useMemo(() => {
     if (data?.projects?.length) {
-      return data.projects.map((p, i): Project => ({
-        id: i + 1,
-        title: p.title,
-        category: p.category,
-        description: p.description ?? "High-resolution photorealistic render.",
-        image: p.thumbnailUrl ?? "",
-        url: "#",
-        technologies: [],
-        type: p.isVideo ? "video" : "image",
-        videoUrl: p.videoUrl,
-        background: "bright",
-      }));
+      return data.projects.map(
+        (p, i): Project => ({
+          id: i + 1,
+          title: p.title,
+          category: p.category,
+          description:
+            p.description ?? "High-resolution photorealistic render.",
+          image: p.thumbnailUrl ?? "",
+          url: "#",
+          technologies: [],
+          type: p.isVideo ? "video" : "image",
+          videoUrl: p.videoUrl,
+          background: "bright",
+        }),
+      );
     }
     return generateProjects();
   }, [data?.projects]);
@@ -232,14 +432,14 @@ export default function Portfolio({ data }: PortfolioProps) {
 
   const handleNext = useCallback(() => {
     if (!selectedProject) return;
-    const currentIndex = projects.findIndex(p => p.id === selectedProject.id);
+    const currentIndex = projects.findIndex((p) => p.id === selectedProject.id);
     const nextIndex = (currentIndex + 1) % projects.length;
     setSelectedProject(projects[nextIndex]);
   }, [selectedProject, projects]);
 
   const handlePrev = useCallback(() => {
     if (!selectedProject) return;
-    const currentIndex = projects.findIndex(p => p.id === selectedProject.id);
+    const currentIndex = projects.findIndex((p) => p.id === selectedProject.id);
     const prevIndex = (currentIndex - 1 + projects.length) % projects.length;
     setSelectedProject(projects[prevIndex]);
   }, [selectedProject, projects]);
@@ -268,7 +468,10 @@ export default function Portfolio({ data }: PortfolioProps) {
   );
 
   return (
-    <section id="portfolio" className="py-12 md:py-16 bg-neutral-50 dark:bg-neutral-900">
+    <section
+      id="portfolio"
+      className="py-12 md:py-16 bg-neutral-50 dark:bg-neutral-900"
+    >
       <div className="container mx-auto px-4 max-w-[1400px]">
         {/* Header */}
         <motion.div
@@ -292,10 +495,11 @@ export default function Portfolio({ data }: PortfolioProps) {
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`px-4 py-2 md:px-6 md:py-3 rounded-full text-sm md:text-base font-medium transition-all duration-300 ${activeCategory === cat.id
-                ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/30 scale-105"
-                : "bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-700"
-                }`}
+              className={`px-4 py-2 md:px-6 md:py-3 rounded-full text-sm md:text-base font-medium transition-all duration-300 ${
+                activeCategory === cat.id
+                  ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/30 scale-105"
+                  : "bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-700"
+              }`}
             >
               {cat.label}
             </button>
@@ -324,14 +528,16 @@ export default function Portfolio({ data }: PortfolioProps) {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            {(activeCategory === "still" || activeCategory === "classic") ? (
+            {activeCategory === "still" || activeCategory === "classic" ? (
               <div className="space-y-12">
                 {/* Bright Background */}
                 <div>
                   <h3 className="text-xl md:text-2xl font-semibold text-center mb-6 text-neutral-800 dark:text-neutral-200">
                     Bright Background
                   </h3>
-                  {renderGrid(filteredProjects.filter(p => p.background === "bright"))}
+                  {renderGrid(
+                    filteredProjects.filter((p) => p.background === "bright"),
+                  )}
                 </div>
 
                 {/* Dark Background */}
@@ -339,7 +545,9 @@ export default function Portfolio({ data }: PortfolioProps) {
                   <h3 className="text-xl md:text-2xl font-semibold text-center mb-6 text-neutral-800 dark:text-neutral-200">
                     Dark Background
                   </h3>
-                  {renderGrid(filteredProjects.filter(p => p.background === "dark"))}
+                  {renderGrid(
+                    filteredProjects.filter((p) => p.background === "dark"),
+                  )}
                 </div>
               </div>
             ) : (
@@ -436,7 +644,13 @@ export default function Portfolio({ data }: PortfolioProps) {
   );
 }
 
-function ProjectCard({ project, onClick }: { project: Project; onClick: () => void }) {
+function ProjectCard({
+  project,
+  onClick,
+}: {
+  project: Project;
+  onClick: () => void;
+}) {
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
