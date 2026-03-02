@@ -98,8 +98,6 @@ export default function Portfolio({ data }: PortfolioProps) {
     //   { src: "/Still Images/Dark Background/01-Ring-De-Grisogono-2-big.jpg", title: "De Grisogono Ring II" },
     // ];
 
-    // In the generateProjects() function, replace the stillImages array:
-
     const stillImages = [
       {
         src: "/images/portfolio/Classic Stills/Bright Background/Dancing Earrings 1.jpg",
@@ -268,6 +266,39 @@ export default function Portfolio({ data }: PortfolioProps) {
       {
         src: "/images/portfolio/Classic Stills/Bright Background/Ring 17-3.jpg",
         title: "Ring 17-3",
+      },
+      // Dark Background Images
+      {
+        src: "/images/portfolio/Classic Stills/Dark Background/Anticlock 1.jpg",
+        title: "Anticlock 1",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Dark Background/Butterfly Ring 1.jpg",
+        title: "Butterfly Ring 1",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Dark Background/Double Halo 1.jpg",
+        title: "Double Halo 1",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Dark Background/Double Halo 2.jpg",
+        title: "Double Halo 2",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Dark Background/Eternity Emerald 1.jpg",
+        title: "Eternity Emerald 1",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Dark Background/Pear Sapphire 1.jpg",
+        title: "Pear Sapphire 1",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Dark Background/Pear Sapphire 2.jpg",
+        title: "Pear Sapphire 2",
+      },
+      {
+        src: "/images/portfolio/Classic Stills/Dark Background/Pear Sapphire 3.jpg",
+        title: "Pear Sapphire 3",
       },
     ];
 
