@@ -374,47 +374,38 @@ export default function Portfolio({ data }: PortfolioProps) {
 
     const classicAnimations = [
       {
-        src: "/images/portfolio/Classic Stills/Bright Background/Princes Halo 1.jpg",
         videoUrl: "https://www.youtube.com/embed/hLxQ0KtxeTo",
         title: "Ballerina Ring",
       },
       {
-        src: "/images/portfolio/Classic Stills/Bright Background/Ring 1-1.jpg",
         videoUrl: "https://www.youtube.com/embed/HciDeL93Jzg",
         title: "Blue Marquise",
       },
       {
-        src: "/images/portfolio/Classic Stills/Bright Background/Ring 5-1.jpg",
         videoUrl: "https://www.youtube.com/embed/bNmLKmZp5IY",
         title: "HKIJS",
       },
       {
-        src: "/images/portfolio/Classic Stills/Bright Background/Dancing Earrings 1.jpg",
         videoUrl: "https://www.youtube.com/embed/XaaUQWfpUeQ",
         title: "Rainbow",
       },
       {
-        src: "/images/portfolio/Classic Stills/Bright Background/Ring 10-1.jpg",
         videoUrl: "https://www.youtube.com/embed/RWObbH7AHhQ",
         title: "Ring 1",
       },
       {
-        src: "/images/portfolio/Classic Stills/Bright Background/Ring 12-1.jpg",
         videoUrl: "https://www.youtube.com/embed/7o4C_n0yTHk",
         title: "Ring 6",
       },
       {
-        src: "/images/portfolio/Classic Stills/Bright Background/Ring 16-1.jpg",
         videoUrl: "https://www.youtube.com/embed/iwwi7XtCnD8",
         title: "Ring 7",
       },
       {
-        src: "/images/portfolio/Classic Stills/Bright Background/Ring 3-1.jpg",
         videoUrl: "https://www.youtube.com/embed/olCVzmlMQDk",
         title: "Ring 8",
       },
     ];
-
     // const onBodyData = [
 
     // ];
@@ -499,19 +490,19 @@ export default function Portfolio({ data }: PortfolioProps) {
     });
 
     // Classic Animations
-    classicAnimations.forEach((item, i) => {
+    classicAnimations.forEach((item) => {
       allProjects.push({
         id: idCounter++,
         title: item.title,
         category: "creative",
         description:
           "Elegant 360-degree rotation showcasing the full geometry of the design.",
-        image: item.src,
+        image: `https://img.youtube.com/vi/${item.videoUrl.split("/").pop()}/hqdefault.jpg`, // YouTube default thumbnail
         url: "#",
         technologies: ["Animation", "360 Video", "Gold Material"],
         type: "video",
         videoUrl: item.videoUrl,
-        background: getBackground(item.src),
+        background: "bright",
       });
     });
 
