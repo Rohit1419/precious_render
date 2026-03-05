@@ -50,7 +50,7 @@ export default function Hero({ data }: HeroProps) {
   const primaryCtaHref =
     data?.primaryCtaHref ??
     "https://wa.me/7823846641?text=Hello%20I%20want%20to%20know%20more%20about%20your%20services";
-  const videoSrc = data?.backgroundVideoUrl ?? "/Precious render.mp4";
+  const videoSrc = data?.backgroundVideoUrl ?? "/images/Banner.webm";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -122,7 +122,7 @@ export default function Hero({ data }: HeroProps) {
         preload="metadata"
         className="absolute top-0 left-0 w-full h-full object-cover opacity-30"
       >
-        <source src={videoSrc} type="video/mp4" />
+        <source src={videoSrc} type="video/webm" />
       </video>
 
       <motion.div
